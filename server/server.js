@@ -8,7 +8,7 @@ const path = require('path');
 // app.use(express.static(path.join(__dirname, 'public')));       -> USE IN PRODUCTION
 
 const pool = mysql.createPool({
-  host: 'mydb',              // docker image name (service name in k8s) -  on PRODUCTION - also can ${ENV_VARIABLE}
+  host: 'localhost',              // docker image name (service name in k8s) -  on PRODUCTION - also can ${ENV_VARIABLE}
   user: 'cash100m',
   password: '9TToo02345/55',
   database: 'mydb',

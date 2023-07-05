@@ -10,20 +10,6 @@ function HomeCarousel() {
       <Carousel.Item>
         <img
           className="d-block w-100 carousel-image"
-          src="https://images.pexels.com/photos/966416/pexels-photo-966416.jpeg"
-          alt="First slide"
-        />
-      <Carousel.Caption>
-        <h3>Freshly Picked Cherries</h3>
-        <p>Available from two different farms.</p>
-        <Link to="/category/cherries">
-          <Button variant="primary">Shop Now</Button>
-        </Link>
-      </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100 carousel-image"
           src="https://images.pexels.com/photos/13262362/pexels-photo-13262362.jpeg"
           alt="Second slide"
         />
@@ -35,6 +21,21 @@ function HomeCarousel() {
         </Link>
       </Carousel.Caption>
       </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100 carousel-image"
+          src="https://images.pexels.com/photos/966416/pexels-photo-966416.jpeg"
+          alt="First slide"
+        />
+      <Carousel.Caption>
+        <h3>Freshly Picked Cherries</h3>
+        <p>Available from two different farms.</p>
+        <Link to="/category/cherries">
+          <Button variant="primary">Shop Now</Button>
+        </Link>
+      </Carousel.Caption>
+      </Carousel.Item>
+
       <Carousel.Item>
         <img
           className="d-block w-100 carousel-image"

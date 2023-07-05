@@ -10,11 +10,11 @@ const { SubMenu } = Menu;
 function NavigationBar() {
   return (
     <Menu mode="horizontal" theme="dark" style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Menu.Item key="home" style={{ fontSize: '1.5em' }}>
-        <Link to="/">Zef's Webshop</Link> 
+      <Menu.Item key="home" style={{ fontSize: '2.5em', fontFamily: 'Brush Script MT'}}>
+        <Link to="/">Zef's SHOP</Link> 
       </Menu.Item>
 
-      <SubMenu key="fruits" title="Fruits">
+      <SubMenu key="fruits-vegetables" title="Fruits & Vegetables">
         <Menu.Item key="apples">
           <Link to="/category/apples">Apples</Link>
         </Menu.Item>
@@ -24,9 +24,6 @@ function NavigationBar() {
         <Menu.Item key="cherries">
           <Link to="/category/cherries">Cherries</Link>
         </Menu.Item>
-      </SubMenu>
-
-      <SubMenu key="vegetables" title="Vegetables">
         <Menu.Item key="carrots">
           <Link to="/category/carrots">Carrots</Link>
         </Menu.Item>
@@ -38,12 +35,27 @@ function NavigationBar() {
         </Menu.Item>
       </SubMenu>
 
-      <SubMenu key="meat" title="Meat">
+      <SubMenu key="bread-bakery" title="Bread & Bakery">
+      <Menu.Item key="bread">
+          <Link to="/category/bread">Bread</Link>
+        </Menu.Item>
+        <Menu.Item key="bagels">
+          <Link to="/category/bagels">Bagels</Link>
+        </Menu.Item>
+        <Menu.Item key="rolls">
+          <Link to="/category/rolls">Rolls</Link>
+        </Menu.Item>
+      </SubMenu>
+
+      <SubMenu key="meat-fish" title="Meat & Fish">
         <Menu.Item key="chicken">
           <Link to="/category/chicken">Chicken</Link>
         </Menu.Item>
         <Menu.Item key="beef">
           <Link to="/category/beef">Beef</Link>
+        </Menu.Item>
+        <Menu.Item key="chicken">
+          <Link to="/category/fish">Fish</Link>
         </Menu.Item>
       </SubMenu>
 
@@ -68,9 +80,9 @@ function NavigationBar() {
         </Menu.Item>
       </SubMenu>
 
-      <SubMenu key="clothes" title="Clothes">
-        <Menu.Item key="tshirts">
-          <Link to="/category/t-shirts">T-shirts</Link>
+      <SubMenu key="for-home" title="For Home">
+        <Menu.Item key="for-home">
+          <Link to="/category/dishes">Dishes</Link>
         </Menu.Item>
       </SubMenu>
 
