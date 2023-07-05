@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mydb:
+    image: mydb
+    container_name: mydb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${WSHP_MARIADB_ROOT_PASSOWRD}
+      - MYSQL_USER=${WSHP_MARIADB_USER}
+      - MYSQL_PASSWORD=${WSHP_MARIADB_PASSWORD}
+
+    volumes:
+      - /etc/db/:/var/lib/mysql
+    networks:
+      - app-network
+
+  server:
+    image: server
+    container_name: server
+    # environment:
+    #   - MARIADB_HOST=mydb
+    # ports:
+    #   - "5000:5000"
+    networks:
+      - app-network
+  
+  web:
+    image: web
+    container_name: web
+    ports:
+      - "80:8080"
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true

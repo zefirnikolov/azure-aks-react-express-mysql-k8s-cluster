@@ -1,0 +1,93 @@
+.product-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px; /* Increase space between items in the column */
+}
+
+
+.product-offer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.product-offer:nth-child(even) {
+  background-color: #f2f2f2; /* Light grey */
+}
+
+.product-offer:nth-child(odd) {
+  background-color: #e6e6e6; /* Another light grey */
+}
+
+.product-offer img {
+  width: 500px;
+  height: 281.5px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.product-offer p {
+  font-size: 18px; /* Adjust as needed */
+}
+
+.product-offer select {
+  border: none;
+  padding: 10px;
+  background-color: #f2f2f2; /* Light grey */
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.product-offer button {
+  border: none;
+  padding: 10px 20px;
+  background-color: blue;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.product-offer button:hover {
+  background-color: darkblue;
+}
+
+h2 {
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 24px; /* Adjust as needed */
+}
+
+p.message {
+  font-size: 1em;
+  color: red;
+}
+
+
+.product-price {
+  font-weight: bold;
+}
+
+.cart-link {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: bold;
+  color: blue;
+  border: 4px solid blue;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cart-link:hover {
+  background-color: blue;
+  color: white;
+}

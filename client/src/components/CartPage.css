@@ -1,0 +1,50 @@
+h2, .cart-reminder, .total-price {
+  text-align: center;
+  color: #333;
+  font-size: 1em;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    padding: 1rem;
+  }
+  
+  .cart-item h3,
+  .cart-item p {
+    margin: 0;
+  }
+  
+  .cart-item button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .cart-item img {
+    height: 60px;    
+    width: 100px;     
+    object-fit: cover;
+  }
+  
+  .checkout-button {
+    display: block; 
+    width: 200px; 
+    height: 50px; 
+    margin: 2em auto; 
+    background-color: blue; 
+    color: white;
+    border: none;
+    border-radius: 25px; 
+    cursor: pointer;
+    font-size: 1.2em; 
+  }
+  
+  .checkout-button:hover {
+    background-color: darkblue; 
+  }

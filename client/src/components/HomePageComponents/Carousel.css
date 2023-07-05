@@ -1,0 +1,21 @@
+.carousel-image {
+    height: 500px; 
+    object-fit: cover; 
+  }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 200px;
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.carousel-caption h3 {
+  font-size: 3rem; 
+  font-weight: bold;
+}
+
+.carousel-caption p {
+  font-size: 2rem;
+  font-weight: bold;
+}

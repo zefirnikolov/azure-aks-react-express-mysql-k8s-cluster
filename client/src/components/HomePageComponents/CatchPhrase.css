@@ -1,0 +1,16 @@
+.catchphrase {
+  text-align: center;
+  padding: 2rem;
+}
+
+.catchphrase h1 {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 2.5em;
+  color: #2c3e50;
+}
+
+.catchphrase p {
+  font-size: 1.5em;
+  color: #34495e;
+  font-style: italic;
+}

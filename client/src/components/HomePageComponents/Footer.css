@@ -1,0 +1,18 @@
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.footer a {
+  color: #6c757d;
+  text-decoration: none;
+}
+
+.footer p {
+  margin-bottom: 0;
+}

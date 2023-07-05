@@ -1,0 +1,26 @@
+.ant-menu-dark.ant-menu-horizontal {
+  background-color: #3f51b5;
+}
+
+.ant-menu-item,
+.ant-menu-submenu-title {
+  font-weight: bold;
+}
+
+.navbar-right {
+  float: right;
+}
+
+.ant-menu-item:hover,
+.ant-menu-submenu-title:hover {
+  background-color: #f8f9fa;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.navbar-right {
+  float: right !important;
+}
+

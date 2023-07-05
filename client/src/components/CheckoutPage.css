@@ -1,0 +1,22 @@
+.continue-shopping {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  background-color: #007BFF;
+  padding: 10px 20px;
+  border-radius: 25px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+div {
+  text-align: center;
+}
+
+.continue-shopping:hover {
+  background-color: #0056b3;
+}
+
+.continue-shopping:active {
+  background-color: #003680;
+}

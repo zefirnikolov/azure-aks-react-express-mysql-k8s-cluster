@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.why-choose-us {
+  display: flex;
+  background-color: rgb(246, 246, 246);
+  max-width: 60%;
+  padding: 20px;
+  border-radius: 10px;
+  margin: auto;
+  margin-top: 60px;
+}
+
+.why-choose-us img {
+  width: 400px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.why-choose-us-content h2 {
+  font-size: 2em;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.why-choose-us-content p {
+  text-align: justify;
+  max-width: 70%;
+  margin: auto;
+  font-size: 1.2em;
+}

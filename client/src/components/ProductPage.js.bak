@@ -1,0 +1,69 @@
+import React, { useContext, useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { CartContext } from '../CartContext';
+
+const ProductsPage = () => {
+  let { productName } = useParams();
+  const [products, setProducts] = useState([]);
+  const [message, setMessage] = useState(null);
+  const { cart, addToCart } = useContext(CartContext);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/products")
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(err => console.log(err));
+  }, []); 
+
+  const handleAddToCart = (product, quantity) => {
+    quantity = parseInt(quantity);
+    const existingProduct = cart.find(p => p.name === product.name);
+    if (existingProduct && existingProduct.quantity + quantity > 20) {
+      setMessage(`Cannot add more. The maximum limit of 20 is reached. Your current quantity is: ${existingProduct.quantity}`);
+    } else {
+      addToCart(product, quantity);
+      setMessage('Added to cart!');
+    }
+    setTimeout(() => setMessage(null), 3000);
+  };
+
+  const renderProduct = (productName) => {
+    if(productName === 'apples') {
+      const appleImages = [
+        "https://images.pexels.com/photos/693794/pexels-photo-693794.jpeg", 
+        "https://images.pexels.com/photos/2966150/pexels-photo-2966150.jpeg"
+      ];
+      return (
+        <div>
+          <h2>Apples</h2>
+          <p>Select from our range of fresh apples</p>
+          {products.map((product, index) => (
+            product.name.includes('apple') && (
+              <div key={product.id}>
+                <img src={appleImages[index]} alt={product.name}/>
+                <p>Offer #{index+1} - Apples 1kg package:  ${product.price}</p>
+                <select id={`quantity-${product.id}`}>
+                  {[...Array(20)].map((_, i) => <option key={i} value={i+1}>{i+1}</option>)}
+                </select>
+                <button onClick={() => handleAddToCart(product, document.getElementById(`quantity-${product.id}`).value)}>Add to cart</button>
+              </div>
+            )
+          ))}
+          <Link to="/cart">Go to Cart</Link>
+          {message && <p>{message}</p>}
+        </div>
+      )
+    } else {
+      return <h1>{`You're browsing: ${productName}`}</h1>
+    }
+  }
+  
+
+  return (
+    <div>
+      {renderProduct(productName)}
+    </div>
+  );
+};
+
+export default ProductsPage;
