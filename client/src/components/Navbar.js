@@ -11,7 +11,7 @@ function NavigationBar() {
   return (
     <Menu mode="horizontal" theme="dark" style={{ display: 'flex', justifyContent: 'space-between' }}>
       <Menu.Item key="home" style={{ fontSize: '1.5em' }}>
-        <Link to="/">Zef's Webshop</Link> 
+        <Link to="/">Zef's SHOP</Link> 
       </Menu.Item>
 
       <SubMenu key="fruits" title="Fruits">
