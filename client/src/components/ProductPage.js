@@ -10,7 +10,7 @@ const ProductsPage = () => {
   const { cart, addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch("/api/products")
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(err => console.log(err));
