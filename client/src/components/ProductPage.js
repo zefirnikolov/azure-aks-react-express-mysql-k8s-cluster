@@ -14,7 +14,7 @@ const ProductsPage = () => {
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(err => console.log(err));
-  }, []); 
+  }, []);
 
   const handleAddToCart = (product, quantity, imageUrl) => {
     quantity = parseInt(quantity);
@@ -81,6 +81,35 @@ const ProductsPage = () => {
       ],
       packageDetails: 'Potatoes 1kg package:'
     },
+    // bread-white, bread-steinalderbrod 
+    'bread': {
+      header: 'Bread',
+      description: "Select from our range of fresh Bread",
+      imageUrls: [
+        "https://images.pexels.com/photos/209196/pexels-photo-209196.jpeg",
+        "https://images.pexels.com/photos/209194/pexels-photo-209194.jpeg"
+      ],
+      packageDetails: 'Whole Bread:'
+    },
+    // bagels-white, bagels-sesame 
+    'bagels': {
+      header: 'Bagels',
+      description: "Select from our range of fresh Bagels",
+      imageUrls: [
+        "https://images.pexels.com/photos/8599536/pexels-photo-8599536.jpeg",
+        "https://images.pexels.com/photos/11599632/pexels-photo-11599632.jpeg"
+      ],
+      packageDetails: 'Bagles 200gr peace:'
+    },
+    // baguettes-white
+    'baguettes': {
+      header: 'Baguettes',
+      description: "Select from our range of fresh Baguettes",
+      imageUrls: [
+        "https://cdn.pixabay.com/photo/2014/01/16/16/35/baguette-246424_1280.jpg"
+      ],
+      packageDetails: 'Whole Baguette:'
+    },
     'chicken': {
       header: 'Chicken',
       description: "Select from our range of great Chicken",
@@ -98,6 +127,16 @@ const ProductsPage = () => {
         "https://cdn.pixabay.com/photo/2017/10/22/20/21/meat-2879151_1280.jpg"
       ],
       packageDetails: 'Beef 500gr piece:'
+    },
+    // fish-salmon-fillet, fish-salmon-raw
+    'fish': {
+      header: 'Fish',
+      description: "Select from our range of great Fish",
+      imageUrls: [
+        "https://cdn.pixabay.com/photo/2021/01/05/23/18/salmon-5892659_1280.jpg",
+        "https://images.pexels.com/photos/14062142/pexels-photo-14062142.jpeg"
+      ],
+      packageDetails: 'Fish around 1kg piece:'
     },
     'chocolate': {
       header: 'Chocolate',
@@ -144,13 +183,14 @@ const ProductsPage = () => {
       ],
       packageDetails: 'Alcohol-free bottle:'
     },
-    't-shirts': {
-      header: 'T-shirts',
-      description: "Select from our range of great T-shirts",
+    // add to db: kitchenware-pack
+    'kitchenware': {
+      header: 'Kitchenware',
+      description: "Select from our range of great Kitchenware",
       imageUrls: [
-        "https://images.pexels.com/photos/8148577/pexels-photo-8148577.jpeg",
+        "https://images.pexels.com/photos/7140435/pexels-photo-7140435.jpeg",
       ],
-      packageDetails: 'T-shirt:'
+      packageDetails: 'Fork, knife and spoon pack:'
     },
   };
 

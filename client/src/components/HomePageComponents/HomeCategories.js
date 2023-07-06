@@ -18,7 +18,6 @@ const HomeCategories = () => {
           <Link to="/category/cherries">Cherries</Link>
           <Link to="/category/carrots">Carrots</Link>
           <Link to="/category/lettuce">Lettuce</Link>
-          <Link to="/category/potatoes">Potatoes</Link>
         </div>
       </div>
 
@@ -29,7 +28,7 @@ const HomeCategories = () => {
         <div className="category-link">
         <Link to="/category/bread">Bread</Link>
           <Link to="/category/bagels">Bagels</Link>
-          <Link to="/category/rolls">Rolls</Link>
+          <Link to="/category/baguettes">Baguettes</Link>
         </div>
       </div>
 
@@ -71,7 +70,7 @@ const HomeCategories = () => {
           <img className="category-image" src="https://images.pexels.com/photos/4108729/pexels-photo-4108729.jpeg" alt="For-Home" />
         </div>
         <div className="category-link">
-          <Link to="/category/dishes">Dishes</Link>
+          <Link to="/category/kitchenware">Kitchenware</Link>
         </div>
       </div>
 

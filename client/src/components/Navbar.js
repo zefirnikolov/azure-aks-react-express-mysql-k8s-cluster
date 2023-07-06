@@ -30,9 +30,6 @@ function NavigationBar() {
         <Menu.Item key="lettuce">
           <Link to="/category/lettuce">Lettuce</Link>
         </Menu.Item>
-        <Menu.Item key="potatoes">
-          <Link to="/category/potatoes">Potatoes</Link>
-        </Menu.Item>
       </SubMenu>
 
       <SubMenu key="bread-bakery" title="Bread & Bakery">
@@ -42,8 +39,8 @@ function NavigationBar() {
         <Menu.Item key="bagels">
           <Link to="/category/bagels">Bagels</Link>
         </Menu.Item>
-        <Menu.Item key="rolls">
-          <Link to="/category/rolls">Rolls</Link>
+        <Menu.Item key="baguettes">
+          <Link to="/category/baguettes">Baguettes</Link>
         </Menu.Item>
       </SubMenu>
 
@@ -82,7 +79,7 @@ function NavigationBar() {
 
       <SubMenu key="for-home" title="For Home">
         <Menu.Item key="for-home">
-          <Link to="/category/dishes">Dishes</Link>
+          <Link to="/category/kitchenware">Kitchenware</Link>
         </Menu.Item>
       </SubMenu>
 
