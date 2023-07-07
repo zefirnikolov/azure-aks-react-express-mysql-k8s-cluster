@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mydb
+  template:
+    metadata:
+      labels:
+        app: mydb
+    spec:
+      containers:
+        - name: mydb
+          image: zefirnikolov/privatization:aksdb1
+        # kubectl create secret generic mysql-pass --from-file=MYSQL_ROOT_PASSWORD=./rootpassword.txt --from-file=MYSQL_PASSWORD=./userpassword.txt --from-literal=MYSQL_USER=cash100m
+          envFrom:
+            - secretRef: 
+                name: mysql-pass
+                optional: false
+      imagePullSecrets:
+        - name: my-registry-secret
+      #   volumeMounts:
+      #     - name: mariadb-persistent-storage
+      #       mountPath: /var/lib/mysql
+      # volumes:
+      #   - name: mariadb-persistent-storage
+      #     persistentVolumeClaim:
+      #       claimName: db-pvc
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mydb
+spec:
+  selector:
+    app: mydb
+  ports:
+  - name: http
+    port: 3306
+    targetPort: 3306    
+  type: ClusterIP

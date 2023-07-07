@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: public-routing
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - zefirnikolov.com
+    - www.zefirnikolov.com
+    secretName: ssl-cert-production
+  rules:
+  - host: zefirnikolov.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: web
+            port:
+              number: 8080
+  - host: www.zefirnikolov.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: web
+            port:
+              number: 8080

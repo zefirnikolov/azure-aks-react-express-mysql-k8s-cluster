@@ -1,0 +1,32 @@
+defaultValues:
+  imagePullSecretName: my-registry-secret
+  imagePullPolicy: Always
+
+
+db:
+  deploymentAndServiceName: mydb
+  replicas: 1
+  dockerImage: zefirnikolov/privatization
+  dockerTag: aksdb1
+  credentialsSecretName: mysql-pass
+  serviceType: ClusterIP
+  servicePort: 3306
+  serviceTargetPort: 3306
+
+server:
+  deploymentAndServiceName: server
+  replicas: 1
+  dockerImage: zefirnikolov/privatization
+  dockerTag: aksserver1
+  serviceType: ClusterIP
+  servicePort: 5000
+  serviceTargetPort: 5000
+
+web:
+  deploymentAndServiceName: web
+  replicas: 2
+  dockerImage: zefirnikolov/privatization
+  dockerTag: aksweb1
+  serviceType: ClusterIP
+  servicePort: 8080
+  serviceTargetPort: 8080
