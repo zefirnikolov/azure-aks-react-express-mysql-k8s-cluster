@@ -21,7 +21,7 @@ jobs:
     with:
       build-the-app: ${{ inputs.build-the-app }}
       install-dependencies-command: cp ./client/Dockerfile . && cp ./client/nginx.conf . && cd ./client && npm ci
-      build-command: cd ./client && npm run build -o ../build
+      build-command: cd ./client && npm run build && cp ./build ../build
       docker-image-name: privatization
       static-docker-image-tag: aksweb2
     
