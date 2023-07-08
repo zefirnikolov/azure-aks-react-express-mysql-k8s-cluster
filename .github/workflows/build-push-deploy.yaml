@@ -31,7 +31,7 @@ jobs:
     needs: [build-and-upload-to-dockerhub]
     uses: zefirnikolov/custom-github-actions/.github/workflows/reusable-deploy-helm-chart-to-aks.yaml@main
     with:
-      deploy-to-k8s:  ${{ inputs.deploy-to-k8 }}
+      deploy-to-k8s: ${{ inputs.deploy-to-k8s }}
       helm-chart-name: react-helm-chart
       helm-deployment-name: app
       additional-helm-commands: --set image.tag=${{ github.run_number }}
