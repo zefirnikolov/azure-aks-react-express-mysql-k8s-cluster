@@ -34,7 +34,8 @@ jobs:
       deploy-to-k8s: ${{ inputs.deploy-to-k8s }}
       helm-chart-name: ./tools/k8s-helm-chart/marketplace
       helm-deployment-name: webshop
-      additional-helm-commands: --set web.ssl=false,web.dockerTag=aksweb2
+      # --set web.ssl=false,web.dockerTag=aksweb2
+      additional-helm-commands: --set web.dockerTag=aksweb2
 
     secrets:
       azure-credentials: ${{ secrets.AZURE_K8S_CREDENTIALS }}
