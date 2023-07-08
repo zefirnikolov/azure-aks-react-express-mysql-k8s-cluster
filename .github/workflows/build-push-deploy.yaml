@@ -20,8 +20,7 @@ jobs:
     uses: zefirnikolov/custom-github-actions/.github/workflows/reusable-react-docker-build-and-push.yaml@main
     with:
       build-the-app: ${{ inputs.build-the-app }}
-      install-dependencies-command: cp ./client/Dockerfile . && cp ./client/nginx.conf . && cd ./client && npm ci
-      build-command: cd ./client && npm run build && cp ./build ../build
+      install-dependencies-command: cp -r ./client/* . && npm ci
       docker-image-name: privatization
       static-docker-image-tag: aksweb2
     
