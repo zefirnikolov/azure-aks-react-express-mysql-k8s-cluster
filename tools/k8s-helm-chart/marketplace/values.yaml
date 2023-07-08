@@ -30,3 +30,4 @@ web:
   serviceType: ClusterIP
   servicePort: 8080
   serviceTargetPort: 8080
+  ssl: true

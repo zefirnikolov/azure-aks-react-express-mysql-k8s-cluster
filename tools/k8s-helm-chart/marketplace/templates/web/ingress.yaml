@@ -4,11 +4,13 @@ metadata:
   name: public-routing
 spec:
   ingressClassName: nginx
+  {{- if .Values.web.ssl }}
   tls:
   - hosts:
     - zefirnikolov.com
     - www.zefirnikolov.com
     secretName: ssl-cert-production
+   {{- end }}
   rules:
   - host: zefirnikolov.com
     http:
