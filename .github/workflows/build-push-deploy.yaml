@@ -1,0 +1,44 @@
+name: Build, Push, Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      build-the-app:
+        description: "Building & uploading to docker-hub"
+        required: true
+        type: boolean
+        default: true
+      deploy-to-k8s:
+        description: "Deploy to k8s"
+        required: true
+        type: boolean
+        default: true
+
+
+jobs:
+  build-and-upload-to-dockerhub:
+    uses: zefirnikolov/custom-github-actions/.github/workflows/reusable-react-docker-build-and-push.yaml@main
+    with:
+      build-the-app: ${{ inputs.build-the-app }}
+      install-dependencies-command: cp ./client/Dockerfile . && cp ./client/nginx.conf . && cd ./client && npm ci
+      build-command: cd ./client && npm run build -o ../build
+      docker-image-name: privatization
+      static-docker-image-tag: aksweb2
+    
+    secrets:
+      docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
+      docker-password: ${{ secrets.DOCKERHUB_TOKEN }}  
+  deploy-to-k8s:
+    needs: [build-and-upload-to-dockerhub]
+    uses: zefirnikolov/custom-github-actions/.github/workflows/reusable-deploy-helm-chart-to-aks.yaml@main
+    with:
+      deploy-to-k8s:  ${{ inputs.deploy-to-k8 }}
+      helm-chart-name: react-helm-chart
+      helm-deployment-name: app
+      additional-helm-commands: --set image.tag=${{ github.run_number }}
+
+    secrets:
+      azure-credentials: ${{ secrets.AZURE_K8S_CREDENTIALS }}
+      aks-cluster-name: ${{ secrets.AZURE_CLUSTER_NAME }}
+      resource-group: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+
