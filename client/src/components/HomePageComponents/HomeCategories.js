@@ -5,7 +5,7 @@ import './HomeCategories.css';
 const HomeCategories = () => {
   return (
     <div className="container">
-      <h2 className="title">Explore our Wide Range of Great Products</h2>
+      <h2 className="title">Explore our Wide Range of Products</h2>
 
       <div className="category-card">
         <div className="category-name" style={{ display: 'none' }}>Fruits-Vegetables</div>
