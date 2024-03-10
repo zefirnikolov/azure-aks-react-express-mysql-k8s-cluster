@@ -15,6 +15,7 @@ spec:
       containers:
         - name: mydb
           image: zefirnikolov/privatization:aksdb1
+          imagePullPolicy: Always
         # kubectl create secret generic mysql-pass --from-file=MYSQL_ROOT_PASSWORD=./rootpassword.txt --from-file=MYSQL_PASSWORD=./userpassword.txt --from-literal=MYSQL_USER=cash100m
           envFrom:
             - secretRef: 
@@ -38,7 +39,7 @@ spec:
   selector:
     app: mydb
   ports:
-  - name: http
+  - protocol: TCP 
     port: 3306
     targetPort: 3306    
   type: ClusterIP
