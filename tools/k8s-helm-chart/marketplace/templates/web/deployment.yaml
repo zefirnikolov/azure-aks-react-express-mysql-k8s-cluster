@@ -18,3 +18,15 @@ spec:
           - name: {{ .Values.web.deploymentAndServiceName }}
             image: {{ .Values.web.dockerImage }}:{{ .Values.web.dockerTag }}
             imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
+            {{- if .Values.web.sslAtPod }}
+            volumeMounts:
+            - name: tls-certs
+              mountPath: "/etc/nginx/ssl"
+              readOnly: true
+            {{- end }}
+        {{- if .Values.web.sslAtPod }}
+        volumes:
+        - name: tls-certs
+          secret:
+            secretName: nginx-tls-secret
+        {{- end }}
