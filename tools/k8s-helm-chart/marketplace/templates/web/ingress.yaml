@@ -6,6 +6,7 @@ metadata:
     {{- if .Values.web.agic }}
     kubernetes.io/ingress.class: azure/application-gateway
     appgw.ingress.kubernetes.io/backend-protocol: "https"
+    appgw.ingress.kubernetes.io/backend-hostname: "zefirnikolov.com"
     {{- else }}
     kubernetes.io/ingress.class: "nginx"
     {{- end }}
@@ -32,7 +33,28 @@ spec:
               {{- else }}
               number: {{ .Values.web.serviceTargetPortHTTP }}
               {{- end }}
-
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: public-routing
+  annotations:
+    {{- if .Values.web.agic }}
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/backend-protocol: "https"
+    appgw.ingress.kubernetes.io/backend-hostname: "www.zefirnikolov.com"
+    {{- else }}
+    kubernetes.io/ingress.class: "nginx"
+    {{- end }}
+spec:
+  {{- if .Values.web.ssl }}
+  tls:
+  - hosts:
+    - zefirnikolov.com
+    - www.zefirnikolov.com
+    secretName: ssl-cert-production
+   {{- end }}
+  rules:
   - host: www.zefirnikolov.com
     http:
       paths:
