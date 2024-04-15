@@ -21,7 +21,7 @@ spec:
             {{- if .Values.web.sslAtPod }}
             volumeMounts:
             - name: tls-certs
-              mountPath: "/etc/nginx/ssl"
+              mountPath: "/etc/nginx/certs"
               readOnly: true
             {{- end }}
         {{- if .Values.web.sslAtPod }}
