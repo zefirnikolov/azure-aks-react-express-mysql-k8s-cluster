@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: web
@@ -14,20 +14,13 @@ spec:
     spec:
       containers:
         - name: web
-          image: zefirnikolov/privatization:aksweb-agic
+          image: zefirnikolov/privatization:aksweb1
           imagePullPolicy: Always
           ports:
-            - containerPort: 443
-          volumeMounts:
-            - name: cert-volume
-              mountPath: "/etc/nginx/certs"
-              readOnly: true
+            - containerPort: 8080
       imagePullSecrets:
         - name: my-registry-secret
-      volumes:
-        - name: cert-volume
-          secret:
-            secretName: ssl-cert-production
+
 ---
 apiVersion: v1
 kind: Service
@@ -38,7 +31,7 @@ spec:
     app: web
 
   ports:
-    - name: https
-      port: 443
-      targetPort: 443
+    - name: http
+      port: 8080
+      targetPort: 8080
   type: ClusterIP
