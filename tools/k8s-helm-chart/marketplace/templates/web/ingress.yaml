@@ -27,7 +27,12 @@ spec:
           service:
             name: {{ .Values.web.deploymentAndServiceName }}
             port:
-              number: {{ .Values.web.serviceTargetPort }}
+              {{- if .Values.web.agic }}
+              number: 8443
+              {{- else }}
+              number: {{ .Values.web.serviceTargetPortHTTP }}
+              {{- end }}
+
   - host: www.zefirnikolov.com
     http:
       paths:
@@ -37,4 +42,8 @@ spec:
           service:
             name: {{ .Values.web.deploymentAndServiceName }}
             port:
-              number: {{ .Values.web.serviceTargetPort }}
+              {{- if .Values.web.agic }}
+              number: 8443
+              {{- else }}
+              number: {{ .Values.web.serviceTargetPortHTTP }}
+              {{- end }}
