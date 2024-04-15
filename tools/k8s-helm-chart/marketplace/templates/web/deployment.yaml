@@ -28,5 +28,5 @@ spec:
         volumes:
         - name: tls-certs
           secret:
-            secretName: nginx-tls-secret
+            secretName: ssl-cert-production
         {{- end }}
