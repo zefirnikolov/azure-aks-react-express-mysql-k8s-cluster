@@ -39,7 +39,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: public-routing
+  name: public-routing-www
   annotations:
     {{- if .Values.web.agic }}
     appgw.ingress.kubernetes.io/backend-protocol: "https"
