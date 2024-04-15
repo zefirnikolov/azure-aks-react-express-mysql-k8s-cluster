@@ -8,5 +8,12 @@ spec:
     app: {{ .Values.web.deploymentAndServiceName }}
   ports:
     - protocol: TCP
-      port: {{ .Values.web.servicePort }}
-      targetPort: {{ .Values.web.serviceTargetPort }}
+      name: http
+      port: {{ .Values.web.servicePortHTTP }}
+      targetPort: {{ .Values.web.serviceTargetPortHTTP }}
+    {{- if .Values.web.sslAtPod }}
+    - protocol: TCP
+      name: https
+      port: 8443
+      targetPort: 8443
+    {{- end }}
