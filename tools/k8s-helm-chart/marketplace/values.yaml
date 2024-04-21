@@ -4,6 +4,7 @@ defaultValues:
 
 
 db:
+  clusterdb: false
   deploymentAndServiceName: mydb
   replicas: 1
   dockerImage: zefirnikolov/privatization
