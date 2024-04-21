@@ -20,4 +20,4 @@ spec:
             imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
             env:
             - name: DB_HOST
-              value: "unique8.mysql.database.azure.com"
+              value: "{{ .Values.server.dbHostname }}"

@@ -21,8 +21,8 @@ server:
   serviceType: ClusterIP
   servicePort: 5000
   serviceTargetPort: 5000
-  dbHostname: mydb
-  
+  dbHostname: "unique8.mysql.database.azure.com"
+
 web:
   deploymentAndServiceName: web
   replicas: 2

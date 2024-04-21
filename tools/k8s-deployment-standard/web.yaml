@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: zefirnikolov/privatization:aksweb1
+          image: zefirnikolov/privatization:aksweb2
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
