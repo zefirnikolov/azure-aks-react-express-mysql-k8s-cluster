@@ -28,11 +28,10 @@ web:
   deploymentAndServiceName: web
   replicas: 2
   dockerImage: zefirnikolov/privatization
-  dockerTag: aksweb-agic
+  dockerTag: aksweb3
   serviceType: ClusterIP
   servicePortHTTP: 8080
   serviceTargetPortHTTP: 8080
   ssl: true
-  sslAtPod: true
-  agic: true
-  volumeMounts: false
+  sslAtPod: false
+  agic: false
