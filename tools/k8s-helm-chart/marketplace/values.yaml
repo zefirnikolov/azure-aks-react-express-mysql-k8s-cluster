@@ -17,10 +17,11 @@ server:
   deploymentAndServiceName: server
   replicas: 1
   dockerImage: zefirnikolov/privatization
-  dockerTag: aksserver1
+  dockerTag: aksserver-connect-to-azure-db1
   serviceType: ClusterIP
   servicePort: 5000
   serviceTargetPort: 5000
+  dbHostname: mydb
 
 web:
   deploymentAndServiceName: web
@@ -33,3 +34,4 @@ web:
   ssl: true
   sslAtPod: true
   agic: true
+  volumeMounts: false
