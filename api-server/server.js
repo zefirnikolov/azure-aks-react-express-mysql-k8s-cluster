@@ -7,6 +7,10 @@ const path = require('path');
 
 // app.use(express.static(path.join(__dirname, 'public')));       -> USE IN PRODUCTION
 
+const sslConfig = {
+  rejectUnauthorized: process.env.SSL_FOR_DB === 'true' // This will correctly parse the string to a boolean
+};
+
 const pool = mysql.createPool({
   host: process.env.DB_HOST,              // docker image name (service name in k8s) -  on PRODUCTION - also can ${ENV_VARIABLE}
   user: 'cash100m',
@@ -14,7 +18,8 @@ const pool = mysql.createPool({
   database: 'mydb',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  ssl: sslConfig
 });
 
 pool.getConnection((err, connection) => {
