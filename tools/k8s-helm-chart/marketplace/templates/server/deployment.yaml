@@ -18,6 +18,6 @@ spec:
           - name: {{ .Values.server.deploymentAndServiceName }}
             image: {{ .Values.server.dockerImage }}:{{ .Values.server.dockerTag }}
             imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
-          env:
-          - name: DB_HOST
-            value: {{ .Values.server.dbHostname }}
+            env:
+            - name: DB_HOST
+              value: {{ .Values.server.dbHostname }}
