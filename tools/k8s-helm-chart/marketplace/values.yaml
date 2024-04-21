@@ -22,8 +22,7 @@ server:
   servicePort: 5000
   serviceTargetPort: 5000
   dbHostname: mydb
-  sslForDB: "true"
-
+  
 web:
   deploymentAndServiceName: web
   replicas: 2
