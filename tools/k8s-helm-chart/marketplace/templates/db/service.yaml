@@ -1,3 +1,4 @@
+{{- if .Values.db.clusterdb }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -10,3 +11,4 @@ spec:
     - protocol: TCP
       port: {{ .Values.db.servicePort }}
       targetPort: {{ .Values.db.serviceTargetPort }}
+{{- end }}

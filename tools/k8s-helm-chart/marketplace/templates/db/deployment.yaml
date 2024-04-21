@@ -1,3 +1,4 @@
+{{- if .Values.db.clusterdb }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,3 +23,4 @@ spec:
               - secretRef: 
                   name: {{ .Values.db.credentialsSecretName }}
                   optional: false
+{{- end }}
