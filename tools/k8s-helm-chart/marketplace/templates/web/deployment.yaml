@@ -18,14 +18,19 @@ spec:
           - name: {{ .Values.web.deploymentAndServiceName }}
             image: {{ .Values.web.dockerImage }}:{{ .Values.web.dockerTag }}
             imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
-            {{- if .Values.web.sslAtPod }}
             volumeMounts:
+            - name: noop-mount
+              mountPath: "/long/place/holder/folder/noop"
+              readOnly: true
+            {{- if .Values.web.sslAtPod }}
             - name: tls-certs
               mountPath: "/etc/nginx/certs"
               readOnly: true
             {{- end }}
-        {{- if .Values.web.sslAtPod }}
         volumes:
+        - name: noop-mount
+          emptyDir: {}
+        {{- if .Values.web.sslAtPod }}
         - name: tls-certs
           secret:
             secretName: ssl-cert-production
