@@ -21,5 +21,3 @@ spec:
             env:
             - name: DB_HOST
               value: {{ .Values.server.dbHostname }}
-            - name: SSL_FOR_DB
-              value: {{ .Values.server.sslForDB }}

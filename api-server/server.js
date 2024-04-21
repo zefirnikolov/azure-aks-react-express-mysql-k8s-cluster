@@ -19,7 +19,9 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: sslConfig
+  ssl: {
+    rejectUnauthorized: true // This enables TLS and accepts only valid certificates; adjust as necessary for your environment
+  }
 });
 
 pool.getConnection((err, connection) => {
