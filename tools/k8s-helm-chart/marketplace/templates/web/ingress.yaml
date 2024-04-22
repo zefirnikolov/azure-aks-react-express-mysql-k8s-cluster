@@ -7,6 +7,10 @@ metadata:
     appgw.ingress.kubernetes.io/ssl-redirect: "true"
     appgw.ingress.kubernetes.io/backend-protocol: "https"
     appgw.ingress.kubernetes.io/backend-hostname: "zefirnikolov.com"
+    {{- else }}
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Host $host;    
     {{- end }}
 spec:
   {{- if .Values.web.agic }}
@@ -46,6 +50,10 @@ metadata:
     appgw.ingress.kubernetes.io/ssl-redirect: "true"
     appgw.ingress.kubernetes.io/backend-protocol: "https"
     appgw.ingress.kubernetes.io/backend-hostname: "www.zefirnikolov.com"
+    {{- else }}
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Host $host;    
     {{- end }}
 spec:
   {{- if .Values.web.agic }}
