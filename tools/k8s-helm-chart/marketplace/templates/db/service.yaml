@@ -1,4 +1,4 @@
-{{- if .Values.db.clusterdb }}
+{{- if .Values.db.dbInCluster }}
 apiVersion: v1
 kind: Service
 metadata:
