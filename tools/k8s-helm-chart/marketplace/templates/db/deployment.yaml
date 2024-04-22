@@ -1,4 +1,4 @@
-{{- if .Values.db.clusterdb }}
+{{- if .Values.db.dbInCluster }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
