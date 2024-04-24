@@ -21,3 +21,5 @@ spec:
             env:
             - name: DB_HOST
               value: "{{ .Values.server.dbHostname }}"
+            - name: DB_USER_PASSWORD
+              value: "{{ .Values.server.dbUserPassword }}"

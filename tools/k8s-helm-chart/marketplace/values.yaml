@@ -23,6 +23,7 @@ server:
   servicePort: 5000
   serviceTargetPort: 5000
   dbHostname: "unique8.mysql.database.azure.com"
+  dbUserPassword: "9TToo02345/55"
 
 web:
   deploymentAndServiceName: web
