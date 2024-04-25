@@ -9,7 +9,7 @@ const path = require('path');
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,              // docker image name (service name in k8s) -  on PRODUCTION - also can ${ENV_VARIABLE}
-  user: 'cash100m',
+  user: process.env.DB_USER,
   password: process.env.DB_USER_PASSWORD,
   database: 'mydb',
   waitForConnections: true,

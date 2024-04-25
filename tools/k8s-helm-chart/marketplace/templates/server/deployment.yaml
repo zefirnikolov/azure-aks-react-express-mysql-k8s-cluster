@@ -23,3 +23,5 @@ spec:
               value: "{{ .Values.server.dbHostname }}"
             - name: DB_USER_PASSWORD
               value: "{{ .Values.server.dbUserPassword }}"
+            - name: DB_USER
+              value: "{{ .Values.server.dbUser }}"
