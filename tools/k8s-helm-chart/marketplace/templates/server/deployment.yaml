@@ -14,6 +14,12 @@ spec:
       spec:
         imagePullSecrets:
           - name:  {{ .Values.defaultValues.imagePullSecretName }}
+        {{- if .Values.db.dbInCluster }}
+        initContainers:
+        - name: init-mydb
+          image: busybox:1.28
+          command: ['sh', '-c', "until nslookup mydb.default.svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+        {{- end }}
         containers:
           - name: {{ .Values.server.deploymentAndServiceName }}
             image: {{ .Values.server.dockerImage }}:{{ .Values.server.dockerTag }}
