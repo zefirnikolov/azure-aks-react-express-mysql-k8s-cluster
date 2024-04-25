@@ -16,7 +16,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   ssl: {
-    rejectUnauthorized: true // This enables TLS and accepts only valid certificates; adjust as necessary for your environment
+    rejectUnauthorized: true // This enables TLS and accepts only valid certificates; remove the 3 rows for in-cluster db;
   }
 });
 
