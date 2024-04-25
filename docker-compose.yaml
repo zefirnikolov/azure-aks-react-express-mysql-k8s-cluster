@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   mydb:
-    image: mydb
-    container_name: mydb
+    image: mydb:2
     environment:
       - MYSQL_ROOT_PASSWORD=${WSHP_MARIADB_ROOT_PASSOWRD}
       - MYSQL_USER=${WSHP_MARIADB_USER}
@@ -15,10 +14,11 @@ services:
       - app-network
 
   server:
-    image: server
-    container_name: server
-    # environment:
-    #   - MARIADB_HOST=mydb
+    image: server:2
+    environment:
+      - DB_HOST="mydb"
+      - DB_USER_PASSWORD=${WSHP_MARIADB_PASSWORD}
+      - DB_USER=${WSHP_MARIADB_USER}
     # ports:
     #   - "5000:5000"
     networks:
@@ -26,7 +26,6 @@ services:
   
   web:
     image: web
-    container_name: web
     # ports:
     #   - "80:8080"
     depends_on:
