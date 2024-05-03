@@ -9,18 +9,25 @@ spec:
       app: {{ .Values.db.deploymentAndServiceName }}
   replicas: {{ .Values.db.replicas }}
   template:
-      metadata:
-        labels:
-          app: {{ .Values.db.deploymentAndServiceName }}
-      spec:
-        imagePullSecrets:
-          - name:  {{ .Values.defaultValues.imagePullSecretName }}
-        containers:
-          - name: {{ .Values.db.deploymentAndServiceName }}
-            image: {{ .Values.db.dockerImage }}:{{ .Values.db.dockerTag }}
-            imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
-            envFrom:
-              - secretRef: 
-                  name: {{ .Values.db.credentialsSecretName }}
-                  optional: false
+    metadata:
+      labels:
+        app: {{ .Values.db.deploymentAndServiceName }}
+    spec:
+      imagePullSecrets:
+      - name:  {{ .Values.defaultValues.imagePullSecretName }}
+      containers:
+      - name: {{ .Values.db.deploymentAndServiceName }}
+        image: {{ .Values.db.dockerImage }}:{{ .Values.db.dockerTag }}
+        imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
+        envFrom:
+        - secretRef: 
+            name: {{ .Values.db.credentialsSecretName }}
+            optional: false
+        resources:
+          requests:
+            cpu: 5m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
 {{- end }}

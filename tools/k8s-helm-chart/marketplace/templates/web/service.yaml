@@ -7,13 +7,13 @@ spec:
   selector:
     app: {{ .Values.web.deploymentAndServiceName }}
   ports:
-    - protocol: TCP
-      name: http
-      port: {{ .Values.web.servicePortHTTP }}
-      targetPort: {{ .Values.web.serviceTargetPortHTTP }}
-    {{- if .Values.web.sslAtPod }}
-    - protocol: TCP
-      name: https
-      port: 8443
-      targetPort: 8443
-    {{- end }}
+  - protocol: TCP
+    name: http
+    port: {{ .Values.web.servicePortHTTP }}
+    targetPort: {{ .Values.web.serviceTargetPortHTTP }}
+  {{- if .Values.web.sslAtPod }}
+  - protocol: TCP
+    name: https
+    port: 8443
+    targetPort: 8443
+  {{- end }}
