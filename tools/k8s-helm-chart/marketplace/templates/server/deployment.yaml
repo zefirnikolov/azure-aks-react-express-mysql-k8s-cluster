@@ -8,26 +8,33 @@ spec:
       app: {{ .Values.server.deploymentAndServiceName }}
   replicas: {{ .Values.server.replicas }}
   template:
-      metadata:
-        labels:
-          app: {{ .Values.server.deploymentAndServiceName }}
-      spec:
-        imagePullSecrets:
-          - name:  {{ .Values.defaultValues.imagePullSecretName }}
-        {{- if .Values.db.dbInCluster }}
-        initContainers:
-        - name: init-mydb
-          image: busybox:1.28
-          command: ['sh', '-c', "until nslookup mydb.default.svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
-        {{- end }}
-        containers:
-          - name: {{ .Values.server.deploymentAndServiceName }}
-            image: {{ .Values.server.dockerImage }}:{{ .Values.server.dockerTag }}
-            imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
-            env:
-            - name: DB_HOST
-              value: "{{ .Values.server.dbHostname }}"
-            - name: DB_USER_PASSWORD
-              value: "{{ .Values.server.dbUserPassword }}"
-            - name: DB_USER
-              value: "{{ .Values.server.dbUser }}"
+    metadata:
+      labels:
+        app: {{ .Values.server.deploymentAndServiceName }}
+    spec:
+      imagePullSecrets:
+      - name:  {{ .Values.defaultValues.imagePullSecretName }}
+      {{- if .Values.db.dbInCluster }}
+      initContainers:
+      - name: init-mydb
+        image: busybox:1.28
+        command: ['sh', '-c', "until nslookup mydb.default.svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+      {{- end }}
+      containers:
+      - name: {{ .Values.server.deploymentAndServiceName }}
+        image: {{ .Values.server.dockerImage }}:{{ .Values.server.dockerTag }}
+        imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
+        env:
+        - name: DB_HOST
+          value: "{{ .Values.server.dbHostname }}"
+        - name: DB_USER_PASSWORD
+          value: "{{ .Values.server.dbUserPassword }}"
+        - name: DB_USER
+          value: "{{ .Values.server.dbUser }}"
+        resources:
+          requests:
+            cpu: 5m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
