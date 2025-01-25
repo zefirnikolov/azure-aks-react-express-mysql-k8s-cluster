@@ -7,18 +7,31 @@ const path = require('path');
 
 // app.use(express.static(path.join(__dirname, 'public')));       -> USE IN PRODUCTION
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,              // docker image name (service name in k8s) -  on PRODUCTION - also can ${ENV_VARIABLE}
+// Read the environment variable
+const isNotSSL = process.env.IS_MYSQL_SSL === 'noMysqlSSL'; // Check if IS_SSL is explicitly set to 'noMysqlSSL'
+
+// Build the configuration object
+const poolConfig = {
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_USER_PASSWORD,
   database: 'mydb',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: {
-    rejectUnauthorized: true // This enables TLS and accepts only valid certificates; remove the 3 rows for in-cluster db;
-  }
-});
+};
+
+// Add SSL configuration only if IS_MYSQL_SSL is NOT 'noMysqlSSL'
+// if (!isNotSSL) -> this is equal to if NOT
+// If there is not IS_MYSQL_SSL = 'noMysqlSSL', then sll = rejectUnathorized will exist, if there is variable set it will not exist
+if (!isNotSSL) {
+  poolConfig.ssl = {
+    rejectUnauthorized: true,
+  };
+}
+
+// Create the connection pool
+const pool = mysql.createPool(poolConfig);
 
 pool.getConnection((err, connection) => {
   if(err) {
