@@ -18,7 +18,7 @@ server:
   deploymentAndServiceName: server
   replicas: 1
   dockerImage: zefirnikolov/privatization
-  dockerTag: aksserver-connect-to-azure-db3
+  dockerTag: aksserver2
   serviceType: ClusterIP
   servicePort: 5000
   serviceTargetPort: 5000
@@ -31,7 +31,7 @@ web:
   deploymentAndServiceName: web
   replicas: 2
   dockerImage: zefirnikolov/privatization
-  dockerTag: aksweb3
+  dockerTag: aksweb4
   serviceType: ClusterIP
   servicePortHTTP: 8080
   serviceTargetPortHTTP: 8080
