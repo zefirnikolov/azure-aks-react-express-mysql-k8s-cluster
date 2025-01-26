@@ -16,6 +16,7 @@ services:
       - DB_HOST=mydb
       - DB_USER_PASSWORD=${WSHP_MARIADB_PASSWORD}
       - DB_USER=${WSHP_MARIADB_USER}
+      # Use this variable with mysql server with no certs, don't use it at all with managed mysql server:
       - IS_MYSQL_SSL=noMysqlSSL
     # ports:
     #   - "5000:5000"
