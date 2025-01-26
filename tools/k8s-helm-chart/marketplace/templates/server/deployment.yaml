@@ -31,6 +31,10 @@ spec:
           value: "{{ .Values.server.dbUserPassword }}"
         - name: DB_USER
           value: "{{ .Values.server.dbUser }}"
+        {{- if .Values.db.dbInCluster }}
+        - name: IS_MYSQL_SSL
+          value: "noMysqlSSL"
+        {{- end }}
         resources:
           requests:
             cpu: 5m
