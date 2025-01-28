@@ -22,7 +22,6 @@ spec:
         envFrom:
         - secretRef: 
             name: {{ .Values.db.credentialsSecretName }}
-            optional: false
         resources:
           requests:
             cpu: 5m

@@ -8,7 +8,8 @@ db:
   deploymentAndServiceName: mydb
   replicas: 1
   dockerImage: zefirnikolov/privatization
-  dockerTag: aksdb1
+  dockerTag: aksdb3
+  # kubectl create secret generic mysql-pass --from-literal=MYSQL_ROOT_PASSWORD=THE_ROOT_PASSWORD --from-literal=MYSQL_PASSWORD=THE_USER_PASSWORD --from-literal=MYSQL_USER=THE_USER_NAME
   credentialsSecretName: mysql-pass
   serviceType: ClusterIP
   servicePort: 3306
