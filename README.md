@@ -1,4 +1,4 @@
-# https://zefirnikolov.com, https://www.zefirnikolov.com
+# https://www.devopsconsults.com
 
 **Fullstack, DevOps Website**, deployed with Azure AKS using CI/CD.
 ![app](app.png)
