@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-## Node version 18
+## Node version 22
 
 In the project directory, you can run:
 
