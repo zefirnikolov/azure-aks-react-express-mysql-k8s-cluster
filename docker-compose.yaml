@@ -24,7 +24,7 @@ services:
       - app-network
 
   web:
-    image: web
+    image: web:ssi
     # ports:
     #   - "80:8080"
     depends_on:
