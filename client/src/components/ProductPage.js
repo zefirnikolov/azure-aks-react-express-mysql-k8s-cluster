@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { CartContext } from '../CartContext';
 import './ProductPage.css';
 
-// Read all products once from the global injected by /bootstrap.js
+// Read all products once from the global injected by index.html via SSI
 const getBootstrapData = () => {
   if (typeof window !== 'undefined' && Array.isArray(window.__BOOTSTRAP__)) {
     return window.__BOOTSTRAP__;
@@ -185,7 +185,6 @@ const ProductsPage = () => {
   // Load all products from bootstrap once
   const allProducts = useMemo(getBootstrapData, []);
 
-  // ✅ FIXED FILTER:
   // Show exact match (e.g., 'potatoes') OR any product starting with '{productName}-'
   const items = useMemo(() => {
     if (!productName) return [];
@@ -207,10 +206,9 @@ const ProductsPage = () => {
   };
 
   const productInfo = productData[productName];
-
   if (!productInfo) {
     return (
-      <div style={{
+      <div style={{ 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -229,7 +227,6 @@ const ProductsPage = () => {
       <h1>{productInfo.header}</h1>
       <p>{productInfo.description}</p>
       {message && <p className="message">{message}</p>}
-
       {items.map((product, index) => {
         // Safe image selection in case more DB rows than images
         const imgSrc = productInfo.imageUrls[index % productInfo.imageUrls.length];
@@ -238,7 +235,9 @@ const ProductsPage = () => {
             <img src={imgSrc} alt={product.name} />
             <p>
               Offer #{index + 1} — {productInfo.packageDetails}
-              <span className="product-price">${product.price}</span> X
+              <span className="product-price">
+                ${product.price}
+              </span> X
             </p>
             <select id={`quantity-${product.id}`}>
               {[...Array(20)].map((_, i) => (
@@ -259,8 +258,9 @@ const ProductsPage = () => {
           </div>
         );
       })}
-
-      <Link to="/cart" className="cart-link">Go to the Shopping Cart</Link>
+      <Link to="/cart" className="cart-link">
+        Go to the Shopping Cart
+      </Link>
     </div>
   );
 };

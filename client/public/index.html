@@ -26,8 +26,21 @@
     -->
     <title>Zef's Webshop</title>
 
+    <script id="bootstrap-products" type="application/json">
+      <!--# include virtual="/__internal/products" -->
+    </script>
+    <script>
+      (function () {
+        var el = document.getElementById('bootstrap-products');
+        var raw = el && el.textContent ? el.textContent.trim() : '[]';
+        try {
+          window.__BOOTSTRAP__ = JSON.parse(raw);
+        } catch (e) {
+          window.__BOOTSTRAP__ = [];
+        }
+      })();
+    </script>
 
-    <script defer src="/bootstrap.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
