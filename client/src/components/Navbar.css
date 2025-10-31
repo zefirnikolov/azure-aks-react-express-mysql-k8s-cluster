@@ -1,26 +1,116 @@
-.ant-menu-dark.ant-menu-horizontal {
-  background-color: #148816;
+/* ====== Theme tokens ====== */
+:root {
+  --nav-text: rgba(255, 255, 255, 0.644);
+  --nav-color-brand: rgba(255, 255, 255, 0.644);
+  --nav-hover: #ffffff;
+  --nav-weight: 600; /* Adjust boldness: 400=normal, 600=semi-bold, 700=bold */
+
+  /* NEW: global font-size for all nav items EXCEPT the logo (.brand) */
+  --nav-font-size: 18px;
 }
 
-.ant-menu-item,
-.ant-menu-submenu-title {
-  font-weight: bold;
+/* ====== Bar background & layout ====== */
+.z-menu {
+  display: flex;
+  align-items: center;
+  background: #148816; /* green */
+  border-bottom: 0 !important;
 }
 
-.navbar-right {
-  float: right;
+/* Push cart to the right */
+.z-menu .cart {
+  margin-left: auto;
 }
 
-.ant-menu-item:hover,
-.ant-menu-submenu-title:hover {
-  background-color: #f8f9fa;
-}
-
-a {
+/* ====== Typography & color ====== */
+/* Base text color + remove underlines everywhere */
+.z-menu,
+.z-menu a,
+.z-menu a:visited,
+.ant-menu-submenu a {
+  color: var(--nav-text) !important;
   text-decoration: none !important;
 }
 
-.navbar-right {
-  float: right !important;
+/* Make menu items bold (top-level + submenu titles), EXCEPT the brand item */
+.z-menu .ant-menu-item:not(.brand),
+.z-menu .ant-menu-submenu-title {
+  font-weight: var(--nav-weight) !important;
 }
 
+/* Also make dropdown submenu links bold */
+.ant-menu-submenu .ant-menu-item a {
+  font-weight: var(--nav-weight) !important;
+  text-decoration: none !important; /* ensure no underline */
+}
+
+/* ====== Font size control (NEW) ====== */
+/* Top-level items (excluding the brand) */
+.z-menu .ant-menu-item:not(.brand) > a,
+.z-menu .ant-menu-submenu-title {
+  font-size: var(--nav-font-size) !important;
+}
+
+/* Dropdown items */
+.z-menu .ant-menu-submenu .ant-menu-item > a {
+  font-size: var(--nav-font-size) !important;
+}
+
+/* Brand styling (logo text stays fixed and does not follow --nav-font-size) */
+.z-menu .brand a {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--nav-color-brand) !important;
+  text-decoration: none !important;
+}
+
+/* ====== Sizing ====== */
+.ant-menu-horizontal > .ant-menu-item,
+.ant-menu-horizontal > .ant-menu-submenu {
+  height: 44px;
+  line-height: 44px;
+  padding: 0 55px;
+}
+
+/* ====== Hover/active/select states ====== */
+.ant-menu-horizontal > .ant-menu-item:hover,
+.ant-menu-horizontal > .ant-menu-submenu:hover,
+.ant-menu-horizontal > .ant-menu-item-active,
+.ant-menu-horizontal > .ant-menu-submenu-active,
+.ant-menu-horizontal > .ant-menu-item-selected,
+.ant-menu-horizontal > .ant-menu-submenu-selected,
+.ant-menu-submenu-title:hover {
+  background: transparent !important;
+  color: var(--nav-hover) !important;
+  text-decoration: none !important;
+}
+
+/* Submenu arrow follows current text color */
+.z-menu .ant-menu-submenu-arrow::before,
+.z-menu .ant-menu-submenu-arrow::after {
+  background: currentColor !important;
+}
+
+/* Housekeeping */
+.ant-menu,
+.ant-menu ul {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+.ant-menu-item::marker,
+.ant-menu-submenu::marker,
+.ant-menu-submenu-title::marker {
+  content: '' !important;
+}
+
+.ant-menu-horizontal {
+  border-bottom: 0 !important;
+}
+
+/* Cart size */
+
+.cart-icon {
+  font-size: 1.5em; /* makes icon 1.5× parent text size */
+}

@@ -1,14 +1,13 @@
+/* global globalThis */
 import React, { useContext, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CartContext } from '../CartContext';
 import './ProductPage.css';
 
-// Read all products once from the global injected by index.html via SSI
+// Read bootstrap data both on the server (globalThis) and the client (window)
 const getBootstrapData = () => {
-  if (typeof window !== 'undefined' && Array.isArray(window.__BOOTSTRAP__)) {
-    return window.__BOOTSTRAP__;
-  }
-  return [];
+  const g = typeof window !== 'undefined' ? window : globalThis;
+  return Array.isArray(g.__BOOTSTRAP__) ? g.__BOOTSTRAP__ : [];
 };
 
 const productData = {
@@ -185,7 +184,7 @@ const ProductsPage = () => {
   // Load all products from bootstrap once
   const allProducts = useMemo(getBootstrapData, []);
 
-  // Show exact match (e.g., 'potatoes') OR any product starting with '{productName}-'
+  // Show exact match or any product starting with `${productName}-`
   const items = useMemo(() => {
     if (!productName) return [];
     return allProducts.filter(
@@ -197,7 +196,9 @@ const ProductsPage = () => {
     const qty = parseInt(quantity, 10);
     const existingProduct = cart.find((p) => p.name === product.name);
     if (existingProduct && existingProduct.quantity + qty > 20) {
-      setMessage(`Cannot add more. The maximum limit of 20 is reached. Your current quantity is: ${existingProduct.quantity}`);
+      setMessage(
+        `Cannot add more. The maximum limit of 20 is reached. Your current quantity is: ${existingProduct.quantity}`
+      );
     } else {
       addToCart(product, qty, imageUrl);
       setMessage('Added to cart!');
@@ -208,7 +209,7 @@ const ProductsPage = () => {
   const productInfo = productData[productName];
   if (!productInfo) {
     return (
-      <div style={{ 
+      <div style={{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -226,9 +227,10 @@ const ProductsPage = () => {
     <div className="product-page">
       <h1>{productInfo.header}</h1>
       <p>{productInfo.description}</p>
+
       {message && <p className="message">{message}</p>}
+
       {items.map((product, index) => {
-        // Safe image selection in case more DB rows than images
         const imgSrc = productInfo.imageUrls[index % productInfo.imageUrls.length];
         return (
           <div key={product.id} className="product-offer">
@@ -258,6 +260,7 @@ const ProductsPage = () => {
           </div>
         );
       })}
+
       <Link to="/cart" className="cart-link">
         Go to the Shopping Cart
       </Link>

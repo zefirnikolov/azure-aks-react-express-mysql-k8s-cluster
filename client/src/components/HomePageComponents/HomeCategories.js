@@ -5,8 +5,10 @@ import './HomeCategories.css';
 const HomeCategories = () => {
   return (
     <div className="container">
-      <h2 className="title">Explore our Wide Range of Products</h2>
-
+      <h1 className="title">Explore Fresh Groceries at Zef's Webshop</h1>
+      <p>
+        Demo app showing modern e‑commerce.
+      </p>
       <div className="category-card">
         <div className="category-name" style={{ display: 'none' }}>Fruits-Vegetables</div>
         <div className="image-container">

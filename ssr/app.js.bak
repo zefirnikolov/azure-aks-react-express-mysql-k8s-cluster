@@ -1,0 +1,71 @@
+// /ssr/app.js
+const path = require('path');
+const fs = require('fs');
+const express = require('express');
+const React = require('react');
+const { renderToString } = require('react-dom/server');
+
+// Import the client App directly; we’ll wrap with StaticRouter below.
+const App = require('../client/src/App').default;
+
+const app = express();
+const PORT = process.env.PORT || 8080;
+const templatePath = path.resolve(__dirname, '../client/public/index.html');
+
+// Safe JSON for embedding into a <script> tag
+function jsonifyForScript(value) {
+  return JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+}
+
+app.get('*', async (req, res) => {
+  try {
+    // 1) Fetch products JSON from your API
+    const apiUrl = `${req.protocol}://${req.get('host')}/server/api/products`;
+    let products = [];
+    try {
+      const r = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
+      if (r.ok) products = await r.json();
+      else console.warn(`[SSR] API ${apiUrl} responded ${r.status}`);
+    } catch (e) {
+      console.warn('[SSR] Failed to fetch products:', e?.message || e);
+    }
+
+    // 2) Load StaticRouter from react-router's server entry.
+    //    Using react-router/server avoids the "./server" subpath export issue in react-router-dom.
+    let StaticRouter;
+    try {
+      ({ StaticRouter } = await (0, eval)('import("react-router/server")'));
+    } catch (e) {
+      console.error('[SSR] Failed to load react-router/server:', e);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // 3) Render the tree for the current URL
+    const tree = React.createElement(
+      StaticRouter,
+      { location: req.url },
+      React.createElement(App)
+    );
+    const appHtml = renderToString(tree);
+
+    // 4) Read template and inject markup + bootstrap data
+    const template = fs.readFileSync(templatePath, 'utf8');
+
+    const outlet =
+      `<div id="root">${appHtml}</div>\n` +
+      `<script>window.__BOOTSTRAP__=${jsonifyForScript(products)};</script>`;
+
+    const html = template.replace('%%SSR_OUTLET%%', outlet);
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200).send(html);
+  } catch (err) {
+    console.error('[SSR] Unhandled error:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`[SSR] listening on http://localhost:${PORT}`);
+});

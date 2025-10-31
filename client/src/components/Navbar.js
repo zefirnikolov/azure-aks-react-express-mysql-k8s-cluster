@@ -1,91 +1,58 @@
 import React from 'react';
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import './Navbar.css';
 
 const { SubMenu } = Menu;
 
 function NavigationBar() {
   return (
-    <Menu mode="horizontal" theme="dark" style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Menu.Item key="home" style={{ fontSize: '2.5em', fontFamily: 'Brush Script MT'}}>
-        <Link to="/">Zef's SHOP</Link> 
+    <Menu mode="horizontal" theme="dark" className="z-menu">
+      <Menu.Item key="home" className="brand">
+        <Link to="/">Zef's SHOP</Link>
       </Menu.Item>
 
       <SubMenu key="fruits-vegetables" title="Fruits & Vegetables">
-        <Menu.Item key="apples">
-          <Link to="/category/apples">Apples</Link>
-        </Menu.Item>
-        <Menu.Item key="lemons">
-          <Link to="/category/lemons">Lemons</Link>
-        </Menu.Item>
-        <Menu.Item key="cherries">
-          <Link to="/category/cherries">Cherries</Link>
-        </Menu.Item>
-        <Menu.Item key="carrots">
-          <Link to="/category/carrots">Carrots</Link>
-        </Menu.Item>
-        <Menu.Item key="lettuce">
-          <Link to="/category/lettuce">Lettuce</Link>
-        </Menu.Item>
+        <Menu.Item key="apples"><NavLink to="/category/apples">Apples</NavLink></Menu.Item>
+        <Menu.Item key="lemons"><NavLink to="/category/lemons">Lemons</NavLink></Menu.Item>
+        <Menu.Item key="cherries"><NavLink to="/category/cherries">Cherries</NavLink></Menu.Item>
+        <Menu.Item key="carrots"><NavLink to="/category/carrots">Carrots</NavLink></Menu.Item>
+        <Menu.Item key="lettuce"><NavLink to="/category/lettuce">Lettuce</NavLink></Menu.Item>
       </SubMenu>
 
       <SubMenu key="bread-bakery" title="Bread & Bakery">
-      <Menu.Item key="bread">
-          <Link to="/category/bread">Bread</Link>
-        </Menu.Item>
-        <Menu.Item key="bagels">
-          <Link to="/category/bagels">Bagels</Link>
-        </Menu.Item>
-        <Menu.Item key="baguettes">
-          <Link to="/category/baguettes">Baguettes</Link>
-        </Menu.Item>
+        <Menu.Item key="bread"><NavLink to="/category/bread">Bread</NavLink></Menu.Item>
+        <Menu.Item key="bagels"><NavLink to="/category/bagels">Bagels</NavLink></Menu.Item>
+        <Menu.Item key="baguettes"><NavLink to="/category/baguettes">Baguettes</NavLink></Menu.Item>
       </SubMenu>
 
       <SubMenu key="meat-fish" title="Meat & Fish">
-        <Menu.Item key="chicken">
-          <Link to="/category/chicken">Chicken</Link>
-        </Menu.Item>
-        <Menu.Item key="beef">
-          <Link to="/category/beef">Beef</Link>
-        </Menu.Item>
-        <Menu.Item key="chicken">
-          <Link to="/category/fish">Fish</Link>
-        </Menu.Item>
+        <Menu.Item key="chicken"><NavLink to="/category/chicken">Chicken</NavLink></Menu.Item>
+        <Menu.Item key="beef"><NavLink to="/category/beef">Beef</NavLink></Menu.Item>
+        <Menu.Item key="fish"><NavLink to="/category/fish">Fish</NavLink></Menu.Item>
       </SubMenu>
 
       <SubMenu key="sweets" title="Sweets">
-        <Menu.Item key="chocolate">
-          <Link to="/category/chocolate">Chocolate</Link>
-        </Menu.Item>
-        <Menu.Item key="candy">
-          <Link to="/category/candy">Candy</Link>
-        </Menu.Item>
-        <Menu.Item key="icecream">
-          <Link to="/category/ice-cream">Ice-Cream</Link>
-        </Menu.Item>
+        <Menu.Item key="chocolate"><NavLink to="/category/chocolate">Chocolate</NavLink></Menu.Item>
+        <Menu.Item key="candy"><NavLink to="/category/candy">Candy</NavLink></Menu.Item>
+        <Menu.Item key="ice-cream"><NavLink to="/category/ice-cream">Ice‑Cream</NavLink></Menu.Item>
       </SubMenu>
 
       <SubMenu key="beverages" title="Beverages">
-        <Menu.Item key="alcoholic">
-          <Link to="/category/alcoholic">Alcohol</Link>
-        </Menu.Item>
-        <Menu.Item key="alcohol-free">
-          <Link to="/category/alcohol-free">Alcohol-free</Link>
-        </Menu.Item>
+        <Menu.Item key="alcohol"><NavLink to="/category/alcoholic">Alcohol</NavLink></Menu.Item>
+        <Menu.Item key="alcohol-free"><NavLink to="/category/alcohol-free">Alcohol‑free</NavLink></Menu.Item>
       </SubMenu>
 
       <SubMenu key="for-home" title="For Home">
-        <Menu.Item key="for-home">
-          <Link to="/category/kitchenware">Kitchenware</Link>
-        </Menu.Item>
+        <Menu.Item key="kitchenware"><NavLink to="/category/kitchenware">Kitchenware</NavLink></Menu.Item>
       </SubMenu>
 
-      <Menu.Item key="cart" className="navbar-right">
+      <Menu.Item key="cart" className="cart">
         <Link to="/cart">
-          <FontAwesomeIcon icon={faShoppingCart} size="xl"/> Cart
+          <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
+          {/* <span className="cart-text"> Cart</span> */}
         </Link>
       </Menu.Item>
     </Menu>

@@ -1,0 +1,23 @@
+{
+  "name": "ssr-server",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/register": "^7.28.3"
+  },
+  "peerDependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-router-dom": "7.9.4"
+  }
+}
