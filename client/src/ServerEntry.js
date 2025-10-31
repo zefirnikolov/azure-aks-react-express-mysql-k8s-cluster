@@ -1,4 +1,3 @@
-// client/src/ServerEntry.js
 import React from 'react';
 import App from './App';
 

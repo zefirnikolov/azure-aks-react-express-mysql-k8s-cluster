@@ -1,4 +1,3 @@
-// /ssr/app.js
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
@@ -28,7 +27,6 @@ function safeSerialize(obj) {
 
 const DEFAULT_PRODUCTS_URL = 'http://server:5000/api/products';
 
-// Replace the *inner HTML* of <div id="root">…</div> with SSR markup.
 // This keeps CRA’s <head> links (CSS/JS) intact so hydration is stable.
 function injectIntoTemplate(html, markup, bootstrapScript) {
   const rootDivRe = /<div\s+id=["']root["'][^>]*>([\s\S]*?)<\/div>/i;
