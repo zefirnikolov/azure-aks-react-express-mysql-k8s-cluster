@@ -3,10 +3,13 @@
   --nav-text: rgba(255, 255, 255, 0.644);
   --nav-color-brand: rgba(255, 255, 255, 0.644);
   --nav-hover: #ffffff;
-  --nav-weight: 600; /* Adjust boldness: 400=normal, 600=semi-bold, 700=bold */
+  --nav-weight: 600;              /* 400=normal, 600=semi-bold, 700=bold */
 
-  /* NEW: global font-size for all nav items EXCEPT the logo (.brand) */
+  /* Base font-size for top-level nav items (excludes .brand) */
   --nav-font-size: 18px;
+
+  /* NEW: font-size for dropdown (submenu) items; falls back to --nav-font-size */
+  --nav-submenu-font-size: 16px;
 }
 
 /* ====== Bar background & layout ====== */
@@ -44,16 +47,28 @@
   text-decoration: none !important; /* ensure no underline */
 }
 
-/* ====== Font size control (NEW) ====== */
+/* ====== Font size control ====== */
 /* Top-level items (excluding the brand) */
 .z-menu .ant-menu-item:not(.brand) > a,
 .z-menu .ant-menu-submenu-title {
   font-size: var(--nav-font-size) !important;
 }
 
-/* Dropdown items */
-.z-menu .ant-menu-submenu .ant-menu-item > a {
-  font-size: var(--nav-font-size) !important;
+/* --- Submenu font sizing (popup + inline) --- */
+/* Apply the size to the popup container and any nested submenu ULs */
+.ant-menu-submenu-popup,
+.z-menu .ant-menu-submenu .ant-menu {
+  font-size: var(--nav-submenu-font-size, var(--nav-font-size)) !important;
+}
+
+/* Ensure the actual clickable content inherits that size (covers current AntD DOM) */
+.ant-menu-submenu-popup .ant-menu-item .ant-menu-title-content,
+.ant-menu-submenu-popup .ant-menu-item .ant-menu-title-content a,
+.ant-menu-submenu-popup .ant-menu-item a,
+.z-menu .ant-menu-submenu .ant-menu-item .ant-menu-title-content,
+.z-menu .ant-menu-submenu .ant-menu-item .ant-menu-title-content a,
+.z-menu .ant-menu-submenu .ant-menu-item a {
+  font-size: inherit !important;
 }
 
 /* Brand styling (logo text stays fixed and does not follow --nav-font-size) */
@@ -110,7 +125,6 @@
 }
 
 /* Cart size */
-
 .cart-icon {
   font-size: 1.5em; /* makes icon 1.5× parent text size */
 }

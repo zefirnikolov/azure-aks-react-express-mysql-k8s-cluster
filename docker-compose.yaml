@@ -43,8 +43,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ~/reverse-proxy.conf:/etc/nginx/nginx.conf
-      - ~/certs/:/etc/nginx/certs
+      - ./reverse-proxy.conf:/etc/nginx/nginx.conf
+      - ./certs/:/etc/nginx/certs
+      - ./nginx-cache/:/var/cache/nginx
     networks:
       - app-network
 

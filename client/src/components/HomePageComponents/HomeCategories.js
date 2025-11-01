@@ -5,7 +5,7 @@ import './HomeCategories.css';
 const HomeCategories = () => {
   return (
     <div className="container">
-      <h1 className="title">Explore Fresh Groceries at Zef's Webshop</h1>
+      <h1 className="title">Explore our Wide Range of Groceries</h1>
       <p>
         Demo app showing modern e‑commerce.
       </p>
