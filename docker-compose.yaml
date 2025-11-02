@@ -28,6 +28,8 @@ services:
       IS_MYSQL_SSL: "noMysqlSSL"
     depends_on:
       - mydb
+    # ports:
+    #   - "5000:5000"
     networks:
       - app-network
 
@@ -38,6 +40,8 @@ services:
     image: web:ssr
     depends_on:
       - server
+    # ports:
+    #   - "8080:8080"
     networks:
       - app-network
 
