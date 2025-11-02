@@ -49,8 +49,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-reverse-proxy
-    image: reverse-proxy:latest
-    container_name: nginx-reverse-proxy
+    image: reverse-proxy:2
     depends_on:
       - mydb
       - web

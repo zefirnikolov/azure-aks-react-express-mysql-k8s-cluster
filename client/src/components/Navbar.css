@@ -3,13 +3,17 @@
   --nav-text: rgba(255, 255, 255, 0.644);
   --nav-color-brand: rgba(255, 255, 255, 0.644);
   --nav-hover: #ffffff;
-  --nav-weight: 600;              /* 400=normal, 600=semi-bold, 700=bold */
-
-  /* Base font-size for top-level nav items (excludes .brand) */
-  --nav-font-size: 18px;
-
-  /* NEW: font-size for dropdown (submenu) items; falls back to --nav-font-size */
+  --nav-weight: 600;           /* 400=normal, 600=semi-bold, 700=bold */
+  --nav-font-size: 18px;       /* top-level items (excludes .brand) */
   --nav-submenu-font-size: 16px;
+  --nav-selected-bg: #1677ff;  /* AntD v5 blue */
+  --nav-selected-text: #ffffff;
+}
+
+/* ====== Page-level fix for Chrome layout shift (scrollbar width) ====== */
+html { scrollbar-gutter: stable; }                 /* keep layout width stable across pages */
+@supports not (scrollbar-gutter: stable) {
+  html { overflow-y: scroll; }                     /* fallback for older browsers */
 }
 
 /* ====== Bar background & layout ====== */
@@ -18,15 +22,20 @@
   align-items: center;
   background: #148816; /* green */
   border-bottom: 0 !important;
+  width: 100%;
+  white-space: nowrap; /* prevent wrapping */
 }
 
-/* Push cart to the right */
+/* Push cart to the right (and keep it stable) */
 .z-menu .cart {
-  margin-left: auto;
+  margin-left: auto !important;  /* pushes cart to far right */
+  order: 9999;                   /* keep last even if AntD reorders */
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;                /* don't shrink */
 }
 
 /* ====== Typography & color ====== */
-/* Base text color + remove underlines everywhere */
 .z-menu,
 .z-menu a,
 .z-menu a:visited,
@@ -35,16 +44,14 @@
   text-decoration: none !important;
 }
 
-/* Make menu items bold (top-level + submenu titles), EXCEPT the brand item */
 .z-menu .ant-menu-item:not(.brand),
 .z-menu .ant-menu-submenu-title {
   font-weight: var(--nav-weight) !important;
 }
 
-/* Also make dropdown submenu links bold */
 .ant-menu-submenu .ant-menu-item a {
   font-weight: var(--nav-weight) !important;
-  text-decoration: none !important; /* ensure no underline */
+  text-decoration: none !important;
 }
 
 /* ====== Font size control ====== */
@@ -54,29 +61,23 @@
   font-size: var(--nav-font-size) !important;
 }
 
-/* --- Submenu font sizing (popup + inline) --- */
-/* Apply the size to the popup container and any nested submenu ULs */
+/* Submenu font sizing (popup + inline) */
 .ant-menu-submenu-popup,
 .z-menu .ant-menu-submenu .ant-menu {
   font-size: var(--nav-submenu-font-size, var(--nav-font-size)) !important;
 }
-
-/* Ensure the actual clickable content inherits that size (covers current AntD DOM) */
-.ant-menu-submenu-popup .ant-menu-item .ant-menu-title-content,
-.ant-menu-submenu-popup .ant-menu-item .ant-menu-title-content a,
 .ant-menu-submenu-popup .ant-menu-item a,
-.z-menu .ant-menu-submenu .ant-menu-item .ant-menu-title-content,
-.z-menu .ant-menu-submenu .ant-menu-item .ant-menu-title-content a,
 .z-menu .ant-menu-submenu .ant-menu-item a {
   font-size: inherit !important;
 }
 
-/* Brand styling (logo text stays fixed and does not follow --nav-font-size) */
+/* Brand styling (size fixed) */
 .z-menu .brand a {
   font-size: 40px;
   font-weight: 600;
   color: var(--nav-color-brand) !important;
   text-decoration: none !important;
+  font-family: 'Brush Script MT', 'Brush Script Std', cursive;
 }
 
 /* ====== Sizing ====== */
@@ -87,7 +88,7 @@
   padding: 0 55px;
 }
 
-/* ====== Hover/active/select states ====== */
+/* ====== Hover/active/select states (top level) ====== */
 .ant-menu-horizontal > .ant-menu-item:hover,
 .ant-menu-horizontal > .ant-menu-submenu:hover,
 .ant-menu-horizontal > .ant-menu-item-active,
@@ -113,18 +114,47 @@
   margin: 0;
   padding: 0;
 }
-
-.ant-menu-item::marker,
-.ant-menu-submenu::marker,
-.ant-menu-submenu-title::marker {
-  content: '' !important;
-}
-
 .ant-menu-horizontal {
   border-bottom: 0 !important;
 }
 
-/* Cart size */
+/* Remove AntD underline (prevents subtle shifts) */
+.ant-menu-horizontal > .ant-menu-item::after,
+.ant-menu-horizontal > .ant-menu-submenu::after,
+.ant-menu-horizontal > .ant-menu-item-selected::after,
+.ant-menu-horizontal > .ant-menu-submenu-selected::after {
+  border-bottom: none !important;
+}
+
+/* Cart icon size */
 .cart-icon {
-  font-size: 1.5em; /* makes icon 1.5× parent text size */
+  font-size: 1.5em;
+}
+
+/* =========================
+   Brand hover: text-only white
+   ========================= */
+.z-menu .ant-menu-item.brand:hover {
+  background: transparent !important;  /* no blue background on brand hover */
+}
+.z-menu .ant-menu-item.brand:hover a {
+  color: #fff !important;              /* letters turn white */
+}
+
+/* =========================
+   Dropdown items: blue on hover/selected (unchanged)
+   ========================= */
+.ant-menu-submenu .ant-menu-item:hover,
+.ant-menu-submenu-popup .ant-menu-item:hover {
+  background-color: var(--nav-selected-bg) !important;
+  color: var(--nav-selected-text) !important;
+}
+.ant-menu-submenu .ant-menu-item:hover a,
+.ant-menu-submenu-popup .ant-menu-item:hover a {
+  color: var(--nav-selected-text) !important;
+}
+.ant-menu-submenu .ant-menu-item-selected,
+.ant-menu-submenu-popup .ant-menu-item-selected {
+  background-color: var(--nav-selected-bg) !important;
+  color: var(--nav-selected-text) !important;
 }
