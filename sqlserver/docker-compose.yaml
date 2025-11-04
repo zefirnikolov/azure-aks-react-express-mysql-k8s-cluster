@@ -1,7 +1,6 @@
 services:
-  mssql:
-    image: my-mssql
-    container_name: my-mssql
+  sqlserver:
+    image: sqlserver:1
     build:
       context: .
       dockerfile: Dockerfile.mssql
@@ -13,8 +12,7 @@ services:
       APP_DB_PASSWORD: 'S0f1a^2025_Data!1'
     ports:
       - "1433:1433"
-    # Persist data by mounting /var/opt/mssql (or just use named volumes)
     # volumes:
-    #   - mssql-data:/var/opt/mssql
+    #   - sqlserver-data:/var/opt/sqlsemssqlrver
 # volumes:
-#   mssql-data:
+#   sqlserver-data:
