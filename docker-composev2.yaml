@@ -1,0 +1,36 @@
+services:
+  sqlserver:
+    build:
+      context: ./sqlserver
+      dockerfile: Dockerfile.mssql
+    image: sqlserver:2
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "S0f1a^2025_Data!1"
+      APP_DB_NAME: "mydb"
+      APP_DB_LOGIN: "cash100m"
+      APP_DB_PASSWORD: "S0f1a^2025_Data!1"
+    # ports:
+    #   - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+  api:
+    build:
+      context: ./api-server
+      dockerfile: Dockerfile.net8
+    image: api-server:5
+    environment:
+      DB_HOST: "sqlserver"
+      DB_USER: "cash100m"
+      DB_USER_PASSWORD: "S0f1a^2025_Data!1"
+      DB_NAME: "mydb"
+      DB_TRUST_SERVER_CERT: "true"
+      ASPNETCORE_URLS: "http://+:5000"
+    depends_on:
+      - sqlserver
+    ports:
+      - "5000:5000"
+
+volumes:
+  mssql-data:
