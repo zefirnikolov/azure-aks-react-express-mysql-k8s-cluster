@@ -1,8 +1,3 @@
-/* ===========================
-   Server-scoped setup
-   =========================== */
-
--- 1) Create database if it doesn't exist
 IF DB_ID(N'$(DBNAME)') IS NULL
 BEGIN
     DECLARE @sql nvarchar(max) =
@@ -11,7 +6,7 @@ BEGIN
 END
 GO
 
--- 2) Create login if it doesn't exist (password embedded as a safely-quoted literal)
+
 IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE name = N'$(APPLOGIN)')
 BEGIN
     DECLARE @pwd nvarchar(128) = N'$(APPPASSWORD)';
@@ -22,11 +17,6 @@ BEGIN
 END
 GO
 
-
-/* ===========================
-   Database-scoped setup
-   (single dynamic batch to preserve USE context)
-   =========================== */
 
 DECLARE @db  sysname        = N'$(DBNAME)';
 DECLARE @app nvarchar(256)  = N'$(APPLOGIN)';
@@ -114,6 +104,5 @@ WHEN NOT MATCHED BY TARGET THEN
 
 EXEC(@dbWork);
 GO
--- 7) (Optional) Set default DB so the app login lands in mydb by default
 ALTER LOGIN [$(APPLOGIN)] WITH DEFAULT_DATABASE = [$(DBNAME)];
 GO

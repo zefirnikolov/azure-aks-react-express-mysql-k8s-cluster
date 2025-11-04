@@ -29,10 +29,8 @@ string connectionString =
     $"Server={dbHost},1433;User ID={dbUser};Password={dbPassword};Database={dbName};" +
     $"Encrypt=true;TrustServerCertificate={trustServerCertificate};";
 
-// GET /
 app.MapGet("/", () => Results.Text("Welcome to the server!"));
 
-// GET /api/products  -> mirrors your Express route
 app.MapGet("/api/products", async () =>
 {
     try
