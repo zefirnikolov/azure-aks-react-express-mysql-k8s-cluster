@@ -39,9 +39,6 @@ services:
       - app-network
       - data-network
 
-  # -----------------------
-  # Private Redis
-  # -----------------------
   redis:
     image: redis:7-alpine
     command:
@@ -57,10 +54,6 @@ services:
     networks:
       - data-network
 
-
-  # -----------------------
-  # NEW: Cache Warmer (BusyBox + curl)
-  # -----------------------
   warmer:
     image: alpine:3
     environment:
