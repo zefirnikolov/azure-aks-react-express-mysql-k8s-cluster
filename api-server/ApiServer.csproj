@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- SQL Server client -->
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.0" />
   </ItemGroup>
 </Project>

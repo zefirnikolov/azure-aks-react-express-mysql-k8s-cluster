@@ -15,13 +15,13 @@ services:
     # volumes:
     #   - mssql-data:/var/opt/mssql
     networks:
-      - app-network
+      - data-network
 
   server:
     build:
       context: ./api-server
       dockerfile: Dockerfile.net8
-    image: api-server:5
+    image: api-server:6
     environment:
       DB_HOST: "sqlserver"
       DB_USER: "${WSHP_SQLSERVER_USER:-cash100m}"
@@ -29,10 +29,63 @@ services:
       DB_NAME: "${WSHP_SQLSERVER_DB_NAME:-sqldb}"
       DB_TRUST_SERVER_CERT: "true"
       ASPNETCORE_URLS: "http://+:5000"
+      REDIS_CONNECTION: "redis:6379,password=${WSHP_REDIS_PASSWORD:-S0f1a^2025_Redis!1},abortConnect=false"
+      CACHE_TTL_MINUTES: "360"
     depends_on:
       - sqlserver
     # ports:
     #   - "5000:5000"
+    networks:
+      - app-network
+      - data-network
+
+  # -----------------------
+  # Private Redis
+  # -----------------------
+  redis:
+    image: redis:7-alpine
+    command:
+      [
+        "redis-server",
+        "--appendonly", "no",
+        "--protected-mode", "yes",
+        "--requirepass", "${WSHP_REDIS_PASSWORD:-S0f1a^2025_Redis!1}",
+        "--maxmemory", "64mb",
+        "--maxmemory-policy", "allkeys-lru"
+      ]
+    # no ports -> not exposed outside Docker
+    networks:
+      - data-network
+
+
+  # -----------------------
+  # NEW: Cache Warmer (BusyBox + curl)
+  # -----------------------
+  warmer:
+    image: alpine:3
+    environment:
+      WARM_TARGET: "http://web:8080"
+      WARM_PATHS: "/ /products"
+      WARM_INTERVAL_SECONDS: "3600"       # 1 hour
+      WARM_INITIAL_DELAY_SECONDS: "120"   # initial delay before first warm
+      CURL_TIMEOUT_SECONDS: "20"
+    command: >
+      sh -c '
+        set -eu;
+        apk add --no-cache curl >/dev/null;
+        echo "[warmer] $$(date -u) initial sleep $${WARM_INITIAL_DELAY_SECONDS}s...";
+        sleep $${WARM_INITIAL_DELAY_SECONDS};
+        while true; do
+          for p in $${WARM_PATHS}; do
+            echo "[warmer] $$(date -u) warming: $${WARM_TARGET}$${p}";
+            curl -fsS --max-time $${CURL_TIMEOUT_SECONDS} "$${WARM_TARGET}$${p}" >/dev/null || echo "[warmer] WARN: failed $${p}";
+          done;
+          sleep $${WARM_INTERVAL_SECONDS};
+        done
+      '
+    depends_on:
+      - web
+    restart: unless-stopped
     networks:
       - app-network
 
@@ -41,6 +94,8 @@ services:
       context: .
       dockerfile: Dockerfile-fe
     image: web:ssr
+    environment:
+      PRODUCTS_URL: "http://server:5000/api/products"
     depends_on:
       - server
     # ports:
@@ -67,9 +122,13 @@ services:
     networks:
       - app-network
 
+
 networks:
   app-network:
     driver: bridge
+  data-network:
+    driver: bridge
+    internal: true
 
 # volumes:
 #   mssql-data:

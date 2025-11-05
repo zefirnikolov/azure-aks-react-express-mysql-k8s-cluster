@@ -1,5 +1,7 @@
 using Microsoft.Data.SqlClient;
+using StackExchange.Redis;
 using System.Data;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +31,51 @@ string connectionString =
     $"Server={dbHost},1433;User ID={dbUser};Password={dbPassword};Database={dbName};" +
     $"Encrypt=true;TrustServerCertificate={trustServerCertificate};";
 
+// -------- Redis wiring (6 hours TTL) --------
+string? redisConn = Environment.GetEnvironmentVariable("REDIS_CONNECTION");
+if (string.IsNullOrWhiteSpace(redisConn))
+{
+    var pwd = Environment.GetEnvironmentVariable("WSHP_REDIS_PASSWORD");
+    if (!string.IsNullOrEmpty(pwd))
+        redisConn = $"redis:6379,password={pwd},abortConnect=false";
+}
+
+ConnectionMultiplexer? redis = null;
+IDatabase? cache = null;
+TimeSpan cacheTtl = TimeSpan.FromHours(6);
+
+try
+{
+    if (!string.IsNullOrWhiteSpace(redisConn))
+    {
+        redis = await ConnectionMultiplexer.ConnectAsync(redisConn);
+        cache = redis.GetDatabase();
+        app.Logger.LogInformation("Redis cache enabled.");
+    }
+    else
+    {
+        app.Logger.LogWarning("Redis cache DISABLED (no REDIS_CONNECTION or WSHP_REDIS_PASSWORD).");
+    }
+}
+catch (Exception ex)
+{
+    app.Logger.LogError(ex, "Redis connection failed. Continuing without cache.");
+}
+
+var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
 app.MapGet("/", () => Results.Text("Welcome to the server!"));
 
 app.MapGet("/api/products", async () =>
 {
+    // Try cache first
+    if (cache is not null)
+    {
+        var cached = await cache.StringGetAsync("products:all:v1");
+        if (cached.HasValue)
+            return Results.Content(cached!, "application/json");
+    }
+
     try
     {
         var list = new List<Product>();
@@ -52,7 +95,13 @@ app.MapGet("/api/products", async () =>
             ));
         }
 
-        return Results.Json(list);
+        var json = JsonSerializer.Serialize(list, jsonOptions);
+
+        // Write to Redis if available
+        if (cache is not null)
+            _ = cache.StringSetAsync("products:all:v1", json, cacheTtl);
+
+        return Results.Content(json, "application/json");
     }
     catch (Exception ex)
     {
