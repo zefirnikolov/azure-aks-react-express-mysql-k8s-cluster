@@ -6,10 +6,10 @@ services:
     image: sqlserver:2
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "${WSHP_SQLSERVER_ROOT_PASSWORD:-S0f1a^2025_Data!1}"
+      MSSQL_SA_PASSWORD: "${WSHP_SQLSERVER_ROOT_PASSWORD:-Zur1ch^2026_Data!1}"
       APP_DB_NAME: "${WSHP_SQLSERVER_DB_NAME:-sqldb}"
       APP_DB_LOGIN: "${WSHP_SQLSERVER_USER:-cash100m}"
-      APP_DB_PASSWORD: "${WSHP_DB_PASSWORD:-S0f1a^2025_Data!1}"
+      APP_DB_PASSWORD: "${WSHP_DB_PASSWORD:-Zur1ch^2026_Data!1}"
     # ports:
     #   - "1433:1433"
     # volumes:
@@ -25,11 +25,11 @@ services:
     environment:
       DB_HOST: "sqlserver"
       DB_USER: "${WSHP_SQLSERVER_USER:-cash100m}"
-      DB_USER_PASSWORD: "${WSHP_DB_PASSWORD:-S0f1a^2025_Data!1}"
+      DB_USER_PASSWORD: "${WSHP_DB_PASSWORD:-Zur1ch^2026_Data!1}"
       DB_NAME: "${WSHP_SQLSERVER_DB_NAME:-sqldb}"
       DB_TRUST_SERVER_CERT: "true"
       ASPNETCORE_URLS: "http://+:5000"
-      REDIS_CONNECTION: "redis:6379,password=${WSHP_REDIS_PASSWORD:-S0f1a^2025_Redis!1},abortConnect=false"
+      REDIS_CONNECTION: "redis:6379,password=${WSHP_REDIS_PASSWORD:-Zur1ch^2026_Redis!1},abortConnect=false"
       CACHE_TTL_MINUTES: "360"
     depends_on:
       - sqlserver
@@ -46,7 +46,7 @@ services:
         "redis-server",
         "--appendonly", "no",
         "--protected-mode", "yes",
-        "--requirepass", "${WSHP_REDIS_PASSWORD:-S0f1a^2025_Redis!1}",
+        "--requirepass", "${WSHP_REDIS_PASSWORD:-Zur1ch^2026_Redis!1}",
         "--maxmemory", "64mb",
         "--maxmemory-policy", "allkeys-lru"
       ]
