@@ -1,45 +1,94 @@
-version: "3.9"
-
 services:
-  mydb:
+  sqlserver:
     build:
-      context: ./mariadb
-      dockerfile: Dockerfile
-    image: mydb:2
+      context: ./sqlserver
+      dockerfile: Dockerfile.mssql
+    image: sqlserver:2
     environment:
-      MYSQL_ROOT_PASSWORD: "${WSHP_MARIADB_ROOT_PASSWORD:-rootpass}"
-      MYSQL_USER: "${WSHP_MARIADB_USER:-cash100m}"
-      MYSQL_PASSWORD: "${WSHP_MARIADB_PASSWORD:-apppass}"
-    volumes:
-      - db-data:/var/lib/mysql
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${WSHP_SQLSERVER_ROOT_PASSWORD:-Zur1ch^2026_Data!1}"
+      APP_DB_NAME: "${WSHP_SQLSERVER_DB_NAME:-sqldb}"
+      APP_DB_LOGIN: "${WSHP_SQLSERVER_USER:-cash100m}"
+      APP_DB_PASSWORD: "${WSHP_DB_PASSWORD:-Zur1ch^2026_Data!1}"
+    # ports:
+    #   - "1433:1433"
+    # volumes:
+    #   - mssql-data:/var/opt/mssql
     networks:
-      - app-network
-    restart: always
+      - data-network
 
   server:
     build:
       context: ./api-server
-      dockerfile: Dockerfile
-    image: server:2
+      dockerfile: Dockerfile.net8
+    image: api-server:6
     environment:
-      DB_HOST: mydb
-      DB_USER: "${WSHP_MARIADB_USER:-cash100m}"
-      DB_USER_PASSWORD: "${WSHP_MARIADB_PASSWORD:-apppass}"
-      # Use this variable with mysql server with no certs, don't use it at all with managed mysql server:
-      IS_MYSQL_SSL: "noMysqlSSL"
+      DB_HOST: "sqlserver"
+      DB_USER: "${WSHP_SQLSERVER_USER:-cash100m}"
+      DB_USER_PASSWORD: "${WSHP_DB_PASSWORD:-Zur1ch^2026_Data!1}"
+      DB_NAME: "${WSHP_SQLSERVER_DB_NAME:-sqldb}"
+      DB_TRUST_SERVER_CERT: "true"
+      ASPNETCORE_URLS: "http://+:5000"
+      REDIS_CONNECTION: "redis:6379,password=${WSHP_REDIS_PASSWORD:-Zur1ch^2026_Redis!1},abortConnect=false"
+      CACHE_TTL_MINUTES: "360"
     depends_on:
-      - mydb
+      - sqlserver
     # ports:
     #   - "5000:5000"
     networks:
       - app-network
-    restart: always
+      - data-network
+
+  redis:
+    image: redis:7-alpine
+    command:
+      [
+        "redis-server",
+        "--appendonly", "no",
+        "--protected-mode", "yes",
+        "--requirepass", "${WSHP_REDIS_PASSWORD:-Zur1ch^2026_Redis!1}",
+        "--maxmemory", "64mb",
+        "--maxmemory-policy", "allkeys-lru"
+      ]
+    # no ports -> not exposed outside Docker
+    networks:
+      - data-network
+
+  warmer:
+    image: alpine:3
+    environment:
+      WARM_TARGET: "http://web:8080"
+      WARM_PATHS: "/ /products"
+      WARM_INTERVAL_SECONDS: "3600"       # 1 hour
+      WARM_INITIAL_DELAY_SECONDS: "120"   # initial delay before first warm
+      CURL_TIMEOUT_SECONDS: "20"
+    command: >
+      sh -c '
+        set -eu;
+        apk add --no-cache curl >/dev/null;
+        echo "[warmer] $$(date -u) initial sleep $${WARM_INITIAL_DELAY_SECONDS}s...";
+        sleep $${WARM_INITIAL_DELAY_SECONDS};
+        while true; do
+          for p in $${WARM_PATHS}; do
+            echo "[warmer] $$(date -u) warming: $${WARM_TARGET}$${p}";
+            curl -fsS --max-time $${CURL_TIMEOUT_SECONDS} "$${WARM_TARGET}$${p}" >/dev/null || echo "[warmer] WARN: failed $${p}";
+          done;
+          sleep $${WARM_INTERVAL_SECONDS};
+        done
+      '
+    depends_on:
+      - web
+    restart: unless-stopped
+    networks:
+      - app-network
 
   web:
     build:
       context: .
       dockerfile: Dockerfile-fe
     image: web:ssr
+    environment:
+      PRODUCTS_URL: "http://server:5000/api/products"
     depends_on:
       - server
     # ports:
@@ -54,7 +103,7 @@ services:
       dockerfile: Dockerfile-reverse-proxy
     image: reverse-proxy:2
     depends_on:
-      - mydb
+      - sqlserver
       - web
       - server
     ports:
@@ -68,9 +117,13 @@ services:
       - app-network
     restart: always
 
+
 networks:
   app-network:
     driver: bridge
+  data-network:
+    driver: bridge
+    internal: true
 
-volumes:
-  db-data:
+# volumes:
+#   mssql-data:
