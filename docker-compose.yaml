@@ -16,6 +16,7 @@ services:
     #   - mssql-data:/var/opt/mssql
     networks:
       - data-network
+    restart: always
 
   server:
     build:
@@ -38,6 +39,7 @@ services:
     networks:
       - app-network
       - data-network
+    restart: always
 
   redis:
     image: redis:7-alpine
@@ -53,6 +55,7 @@ services:
     # no ports -> not exposed outside Docker
     networks:
       - data-network
+    restart: always
 
   warmer:
     image: alpine:3
@@ -78,9 +81,9 @@ services:
       '
     depends_on:
       - web
-    restart: unless-stopped
     networks:
       - app-network
+    restart: always
 
   web:
     build:
