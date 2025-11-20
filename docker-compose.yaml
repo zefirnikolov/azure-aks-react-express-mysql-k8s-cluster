@@ -3,7 +3,7 @@ services:
     build:
       context: ./sqlserver
       dockerfile: Dockerfile.mssql
-    image: sqlserver:2
+    image: zefirnikolov/webshop-sqlserver:1
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "${WSHP_SQLSERVER_ROOT_PASSWORD:-Zur1ch^2026_Data!1}"
@@ -22,7 +22,7 @@ services:
     build:
       context: ./api-server
       dockerfile: Dockerfile.net8
-    image: api-server:6
+    image: zefirnikolov/webshop-apiserver:1
     environment:
       DB_HOST: "sqlserver"
       DB_USER: "${WSHP_SQLSERVER_USER:-cash100m}"
@@ -89,7 +89,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-fe
-    image: web:ssr
+    image: zefirnikolov/webshop-fe:1
     environment:
       PRODUCTS_URL: "http://server:5000/api/products"
     depends_on:
