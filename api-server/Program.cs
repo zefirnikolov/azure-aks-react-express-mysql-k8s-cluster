@@ -29,7 +29,7 @@ string trustServerCertificate = GetEnv("DB_TRUST_SERVER_CERT", "true");
 // Encrypt on; trust server cert for local network
 string connectionString =
     $"Server={dbHost},1433;User ID={dbUser};Password={dbPassword};Database={dbName};" +
-    $"Encrypt=true;TrustServerCertificate={trustServerCertificate};";
+    $"Encrypt=true;TrustServerCertificate={trustServerCertificate};Connect Timeout=300;";
 
 // -------- Redis wiring (6 hours TTL) --------
 string? redisConn = Environment.GetEnvironmentVariable("REDIS_CONNECTION");

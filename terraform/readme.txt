@@ -1,0 +1,1 @@
+All the variables are put in locals.tf which is in .gitignore for cleaner code.
