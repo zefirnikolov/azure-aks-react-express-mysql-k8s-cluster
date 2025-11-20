@@ -66,9 +66,9 @@ var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingP
 
 app.MapGet("/", () => Results.Text("Welcome to the server!"));
 
+
 app.MapGet("/api/products", async () =>
 {
-    // Try cache first
     if (cache is not null)
     {
         var cached = await cache.StringGetAsync("products:all:v1");
@@ -76,41 +76,48 @@ app.MapGet("/api/products", async () =>
             return Results.Content(cached!, "application/json");
     }
 
-    try
+    var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+    int retries = 1; // retry once
+    int delayMs = 5000; // wait 5 seconds before retry
+    Exception? lastError = null;
+
+    for (int attempt = 0; attempt <= retries; attempt++)
     {
-        var list = new List<Product>();
-        await using var conn = new SqlConnection(connectionString);
-        await conn.OpenAsync();
-
-        await using var cmd = new SqlCommand(
-            "SELECT id, name, price FROM dbo.products ORDER BY id", conn);
-
-        using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection);
-        while (await reader.ReadAsync())
+        try
         {
-            list.Add(new Product(
-                reader.GetInt32(0),
-                reader.GetString(1),
-                reader.GetDecimal(2)
-            ));
+            var list = new List<Product>();
+            await using var conn = new SqlConnection(connectionString);
+            await conn.OpenAsync();
+            await using var cmd = new SqlCommand(
+                "SELECT id, name, price FROM dbo.products ORDER BY id", conn);
+            using var reader = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+            while (await reader.ReadAsync())
+            {
+                list.Add(new Product(reader.GetInt32(0), reader.GetString(1), reader.GetDecimal(2)));
+            }
+
+            var json = JsonSerializer.Serialize(list, jsonOptions);
+            if (cache is not null)
+                _ = cache.StringSetAsync("products:all:v1", json, cacheTtl);
+
+            return Results.Content(json, "application/json");
         }
-
-        var json = JsonSerializer.Serialize(list, jsonOptions);
-
-        // Write to Redis if available
-        if (cache is not null)
-            _ = cache.StringSetAsync("products:all:v1", json, cacheTtl);
-
-        return Results.Content(json, "application/json");
+        catch (Exception ex)
+        {
+            lastError = ex;
+            if (attempt < retries)
+            {
+                await Task.Delay(delayMs);
+            }
+        }
     }
-    catch (Exception ex)
-    {
-        return Results.Problem(
-            title: "Error querying the database",
-            detail: ex.Message,
-            statusCode: 500);
-    }
+
+    return Results.Problem(
+        title: "Error querying the database after retry",
+        detail: lastError?.Message,
+        statusCode: 500);
 });
+
 
 app.Run();
 

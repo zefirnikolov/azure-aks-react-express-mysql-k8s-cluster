@@ -64,7 +64,7 @@ services:
       WARM_PATHS: "/ /products"
       WARM_INTERVAL_SECONDS: "3600"       # 1 hour
       WARM_INITIAL_DELAY_SECONDS: "120"   # initial delay before first warm
-      CURL_TIMEOUT_SECONDS: "20"
+      CURL_TIMEOUT_SECONDS: "300"
     command: >
       sh -c '
         set -eu;
