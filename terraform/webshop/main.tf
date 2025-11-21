@@ -101,3 +101,40 @@ module "private_dns_zone" {
   ]
   depends_on = [module.sql_private_endpoint]
 }
+
+# ============================================ #
+# AKS MODULE                                   #
+# ============================================ #
+module "aks" {
+  source                        = "../azure-modules/aks"
+  cluster_name                  = local.aks_cluster_name
+  location                      = local.location
+  resource_group_name           = local.rg_name
+  dns_prefix                    = local.aks_dns_prefix
+  kubernetes_version            = local.aks_kubernetes_version
+  vnet_subnet_id                = module.aks_subnet.subnet_id
+  service_cidr                  = local.aks_service_cidr
+  dns_service_ip                = local.aks_dns_service_ip
+  tags                          = local.default_tags
+
+  default_node_pool             = local.aks_default_node_pool
+  default_node_pool_availability_zones = local.aks_default_pool_zones
+  # additional_node_pools         = local.additional_node_pools
+
+  enable_accelerated_networking = local.aks_enable_accelerated_networking
+  os_disk_type                  = local.aks_os_disk_type
+  os_disk_size_gb               = local.aks_os_disk_size_gb
+
+  depends_on                     = [module.private_dns_zone]
+}
+
+# ============================================ #
+# HELM MODULE                                  #
+# ============================================ #
+module "helm" {
+  source    = "../azure-modules/helm"
+  namespace = "webshop" # or any namespace you want
+  releases  = local.helm_releases
+
+  depends_on = [module.aks]
+}

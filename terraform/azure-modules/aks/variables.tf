@@ -60,6 +60,13 @@ variable "default_node_pool" {
   })
 }
 
+
+variable "default_node_pool_availability_zones" {
+  description = "Availability Zones for the default/system node pool (e.g., [\"1\"], [\"1\", \"2\"], or empty to let Azure decide)"
+  type        = list(string)
+  default     = []
+}
+
 # Additional Node Pools
 variable "additional_node_pools" {
   description = "Configuration for additional node pools"
@@ -69,6 +76,26 @@ variable "additional_node_pools" {
     node_count            = number
     min_count             = number
     max_count             = number
+    zones                = optional(list(string))
   }))
   default = {}
+}
+
+
+variable "enable_accelerated_networking" {
+  description = "Enable Accelerated Networking for AKS node pools"
+  type        = bool
+  default     = true
+}
+
+variable "os_disk_type" {
+  description = "OS disk type for AKS nodes (Ephemeral or Managed)"
+  type        = string
+  default     = "Ephemeral"
+}
+
+variable "os_disk_size_gb" {
+  description = "Size of the OS disk in GB"
+  type        = number
+  default     = 100
 }
