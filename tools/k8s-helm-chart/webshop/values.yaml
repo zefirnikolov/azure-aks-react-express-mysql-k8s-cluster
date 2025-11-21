@@ -1,0 +1,50 @@
+defaultValues:
+  imagePullSecretName: my-registry-secret
+  imagePullPolicy: Always
+
+server:
+  deploymentAndServiceName: server
+  replicas: 1
+  dockerImage: zefirnikolov/webshop-apiserver
+  dockerTag: "1"
+  serviceType: ClusterIP
+  servicePort: 5000
+  serviceTargetPort: 5000
+  dbHostname: "sqlserver"
+  dbUser: "cash100m"
+  dbUserPassword: "Zur1ch^2026_Data!1"
+  dbName: "sqldb"
+  redisConnection: "redis:6379,password=Zur1ch^2026_Redis!1,abortConnect=false"
+  cacheTTLMinutes: 360
+  dbTrustServerCert: "true"
+  aspnetcoreUrls: "http://+:5000"
+
+
+webSsr:
+  deploymentAndServiceName: web-ssr
+  replicas: 2
+  dockerImage: zefirnikolov/webshop-fe
+  dockerTag: "1"
+  serviceType: ClusterIP
+  servicePortHTTP: 8080
+  serviceTargetPortHTTP: 8080
+  productsUrl: "http://server:5000/api/products"
+
+warmer:
+  deploymentName: warmer
+  dockerImage: alpine
+  dockerTag: "3"
+  warmTarget: "http://web-ssr:8080"
+  warmPaths: "/ /products"
+  warmIntervalSeconds: 3600
+  warmInitialDelaySeconds: 120
+  curlTimeoutSeconds: 300
+
+redis:
+  deploymentAndServiceName: redis
+  dockerImage: redis
+  dockerTag: "7-alpine"
+  serviceType: ClusterIP
+  servicePort: 6379
+  redisPassword: "Zur1ch^2026_Redis!1"
+  maxMemory: "64mb"

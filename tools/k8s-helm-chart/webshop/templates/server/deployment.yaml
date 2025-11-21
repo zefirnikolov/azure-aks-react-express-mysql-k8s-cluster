@@ -1,0 +1,47 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.server.deploymentAndServiceName }}
+spec:
+  replicas: {{ .Values.server.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.server.deploymentAndServiceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.server.deploymentAndServiceName }}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.defaultValues.imagePullSecretName }}
+      containers:
+        - name: {{ .Values.server.deploymentAndServiceName }}
+          image: "{{ .Values.server.dockerImage }}:{{ .Values.server.dockerTag }}"
+          imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
+          env:
+            - name: DB_HOST
+              value: "{{ .Values.server.dbHostname }}"
+            - name: DB_USER
+              value: "{{ .Values.server.dbUser }}"
+            - name: DB_USER_PASSWORD
+              value: "{{ .Values.server.dbUserPassword }}"
+            - name: DB_NAME
+              value: "{{ .Values.server.dbName }}"
+            - name: DB_TRUST_SERVER_CERT
+              value: "{{ .Values.server.dbTrustServerCert }}"
+            - name: ASPNETCORE_URLS
+              value: "{{ .Values.server.aspnetcoreUrls }}"
+            - name: REDIS_CONNECTION
+              value: "{{ .Values.server.redisConnection }}"
+            - name: CACHE_TTL_MINUTES
+              value: "{{ .Values.server.cacheTTLMinutes }}"
+          ports:
+            - containerPort: {{ .Values.server.serviceTargetPort }}
+          resources:
+            requests:
+              cpu: 5m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.warmer.deploymentName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.warmer.deploymentName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.warmer.deploymentName }}
+    spec:
+      containers:
+        - name: {{ .Values.warmer.deploymentName }}
+          image: "{{ .Values.warmer.dockerImage }}:{{ .Values.warmer.dockerTag }}"
+          command: ["sh", "-c"]
+          args:
+            - "apk add --no-cache curl >/dev/null; echo '[warmer] initial sleep {{ .Values.warmer.warmInitialDelaySeconds }}s...'; sleep {{ .Values.warmer.warmInitialDelaySeconds }}; while true; do for p in {{ .Values.warmer.warmPaths }}; do echo '[warmer] warming: {{ .Values.warmer.warmTarget }}$p'; curl -fsS --max-time {{ .Values.warmer.curlTimeoutSeconds }} '{{ .Values.warmer.warmTarget }}$p' >/dev/null || echo '[warmer] WARN: failed $p'; done; sleep {{ .Values.warmer.warmIntervalSeconds }}; done"

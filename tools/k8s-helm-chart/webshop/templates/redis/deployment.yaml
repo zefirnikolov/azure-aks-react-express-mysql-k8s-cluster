@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.redis.deploymentAndServiceName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.redis.deploymentAndServiceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.redis.deploymentAndServiceName }}
+    spec:
+      containers:
+        - name: {{ .Values.redis.deploymentAndServiceName }}
+          image: "{{ .Values.redis.dockerImage }}:{{ .Values.redis.dockerTag }}"
+          command: ["redis-server", "--appendonly", "no", "--protected-mode", "yes", "--requirepass", "{{ .Values.redis.redisPassword }}", "--maxmemory", "{{ .Values.redis.maxMemory }}", "--maxmemory-policy", "allkeys-lru"]
+          ports:
+            - containerPort: {{ .Values.redis.servicePort }}

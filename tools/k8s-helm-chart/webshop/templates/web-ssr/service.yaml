@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.webSsr.deploymentAndServiceName }}
+spec:
+  type: {{ .Values.webSsr.serviceType }}
+  selector:
+    app: {{ .Values.webSsr.deploymentAndServiceName }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.webSsr.servicePortHTTP }}
+      targetPort: {{ .Values.webSsr.serviceTargetPortHTTP }}

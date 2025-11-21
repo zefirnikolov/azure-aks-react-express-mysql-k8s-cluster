@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.webSsr.deploymentAndServiceName }}
+spec:
+  replicas: {{ .Values.webSsr.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.webSsr.deploymentAndServiceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.webSsr.deploymentAndServiceName }}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.defaultValues.imagePullSecretName }}
+      containers:
+        - name: {{ .Values.webSsr.deploymentAndServiceName }}
+          image: "{{ .Values.webSsr.dockerImage }}:{{ .Values.webSsr.dockerTag }}"
+          imagePullPolicy: {{ .Values.defaultValues.imagePullPolicy }}
+          env:
+            - name: PRODUCTS_URL
+              value: "{{ .Values.webSsr.productsUrl }}"
+          ports:
+            - containerPort: {{ .Values.webSsr.serviceTargetPortHTTP }}
+          resources:
+            requests:
+              cpu: 5m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
