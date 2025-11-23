@@ -1,10 +1,11 @@
 # https://www.sredemo.app
 
 **Fullstack, DevOps App**, deployed on Azure with Terraform, upgraded with CI/CD
-Azure deployment stack:
+
+**Azure deployment architecture:**
 ![architechture](architecture.png)
 
 
-The Landing Page:
+**The Landing Page:**
 ![app](app.png)
 
