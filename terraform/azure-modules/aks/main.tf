@@ -13,6 +13,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     node_count            = var.default_node_pool.node_count
     min_count             = var.default_node_pool.min_count
     max_count             = var.default_node_pool.max_count
+    max_pods              = var.default_node_pool.max_pods
     vnet_subnet_id        = var.vnet_subnet_id
     os_disk_type          = var.os_disk_type
     os_disk_size_gb       = var.os_disk_size_gb
@@ -43,9 +44,22 @@ resource "azurerm_kubernetes_cluster_node_pool" "additional_node_pools" {
   node_count            = each.value.node_count
   min_count             = each.value.min_count
   max_count             = each.value.max_count
+  max_pods              = each.value.max_pods
   vnet_subnet_id        = var.vnet_subnet_id
   os_disk_type          = var.os_disk_type
   os_disk_size_gb       = var.os_disk_size_gb
   tags                  = var.tags
   zones                 = try(each.value.zones, null)
+}
+
+resource "azurerm_role_assignment" "aks_network_contributor_subnet" {
+  scope                = var.vnet_subnet_id
+  role_definition_name = "Network Contributor"
+
+  # This will be unknown during plan on first create, and becomes known at apply.
+  principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+
+  depends_on = [
+    azurerm_kubernetes_cluster.aks
+  ]
 }

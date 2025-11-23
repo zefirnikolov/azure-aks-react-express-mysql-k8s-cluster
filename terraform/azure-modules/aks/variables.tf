@@ -57,6 +57,7 @@ variable "default_node_pool" {
     node_count            = number
     min_count             = number
     max_count             = number
+    max_pods              = number
   })
 }
 
@@ -76,6 +77,7 @@ variable "additional_node_pools" {
     node_count            = number
     min_count             = number
     max_count             = number
+    max_pods              = number
     zones                = optional(list(string))
   }))
   default = {}

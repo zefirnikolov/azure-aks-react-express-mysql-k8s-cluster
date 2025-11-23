@@ -30,6 +30,24 @@ webSsr:
   serviceTargetPortHTTP: 8080
   productsUrl: "http://server:5000/api/products"
 
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations: {}        # e.g. set entrypoints, middlewares here
+  tls:
+    enabled: false
+    secretName: ""       # set when tls.enabled = true
+  hosts: # Multiple hosts enabled.
+    # - host: "sredemo.app"
+    #   paths:
+    #     - path: "/"
+    #       pathType: "Prefix"
+    - host: "www.sredemo.app"
+      paths:
+        - path: "/"
+          pathType: "Prefix"
+
+
 warmer:
   deploymentName: warmer
   dockerImage: alpine
@@ -48,3 +66,4 @@ redis:
   servicePort: 6379
   redisPassword: "Zur1ch^2026_Redis!1"
   maxMemory: "64mb"
+

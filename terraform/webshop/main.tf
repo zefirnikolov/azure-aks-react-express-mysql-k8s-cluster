@@ -119,7 +119,7 @@ module "aks" {
 
   default_node_pool             = local.aks_default_node_pool
   default_node_pool_availability_zones = local.aks_default_pool_zones
-  # additional_node_pools         = local.additional_node_pools
+  additional_node_pools         = local.additional_node_pools
 
   enable_accelerated_networking = local.aks_enable_accelerated_networking
   os_disk_type                  = local.aks_os_disk_type
@@ -127,6 +127,21 @@ module "aks" {
 
   depends_on                     = [module.private_dns_zone]
 }
+
+
+# ============================================ #
+# TLS SECRET MODULE                            #
+# ============================================ #
+module "tls_secret" {
+  source             = "../azure-modules/tls-secret"
+  namespace          = local.tls_namespace
+  tls_secret_name    = local.tls_secret_name
+  tls_fullchain_path = local.tls_fullchain_path
+  tls_privkey_path   = local.tls_privkey_path
+
+  depends_on = [module.aks]
+}
+
 
 # ============================================ #
 # HELM MODULE                                  #
@@ -136,5 +151,7 @@ module "helm" {
   namespace = "webshop" # or any namespace you want
   releases  = local.helm_releases
 
-  depends_on = [module.aks]
+  depends_on = [module.aks, module.tls_secret]
 }
+
+

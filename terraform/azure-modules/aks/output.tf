@@ -18,3 +18,8 @@ output "node_resource_group" {
   description = "Resource group for AKS nodes"
   value       = azurerm_kubernetes_cluster.aks.node_resource_group
 }
+
+output "aks_managed_identity_principal_id" {
+  description = "Principal ID of the AKS SystemAssigned managed identity"
+  value       = try(azurerm_kubernetes_cluster.aks.identity[0].principal_id, null)
+}

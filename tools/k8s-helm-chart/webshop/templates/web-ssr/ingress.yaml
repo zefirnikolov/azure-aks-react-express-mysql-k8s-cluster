@@ -1,17 +1,39 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: public-routing
+  name: {{ printf "%s-ingress" .Release.Name | quote }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingress.className | quote }}
+
+  {{- if and .Values.ingress.tls.enabled .Values.ingress.tls.secretName }}
+  tls:
+    - secretName: {{ .Values.ingress.tls.secretName | quote }}
+      hosts:
+        {{- range .Values.ingress.hosts }}
+        - {{ .host | quote }}
+        {{- end }}
+  {{- end }}
+
   rules:
-    - host: example.com
+    {{- $svcName := .Values.webSsr.deploymentAndServiceName }}
+    {{- $svcPort := .Values.webSsr.servicePortHTTP }}
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-          - pathType: Prefix
-            path: "/"
+          {{- range .paths }}
+          - path: {{ .path | default "/" | quote }}
+            pathType: {{ .pathType | default "Prefix" }}
             backend:
               service:
-                name: {{ .Values.webSsr.deploymentAndServiceName }}
+                name: {{ $svcName }}
                 port:
-                  number: {{ .Values.webSsr.serviceTargetPortHTTP }}
+                  number: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
+{{- end }}
