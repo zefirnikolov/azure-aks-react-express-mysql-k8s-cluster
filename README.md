@@ -1,5 +1,10 @@
-# https://www.devopsconsults.com https://sredemo.app
+# https://www.sredemo.app
 
-**Fullstack, DevOps Website**, deployed with Azure AKS using CI/CD.
+**Fullstack, DevOps App**, deployed on Azure with Terraform, upgraded with CI/CD
+Azure deployment stack:
+![architechture](architecture.png)
+
+
+The Landing Page:
 ![app](app.png)
 
