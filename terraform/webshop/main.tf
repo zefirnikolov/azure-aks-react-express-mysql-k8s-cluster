@@ -42,6 +42,15 @@ module "app_subnet" {
   depends_on            = [module.vnet]
 }
 
+module "agw_subnet" {
+  source                  = "../azure-modules/subnet"
+  subnet_name             = local.agw_subnet_name
+  resource_group_name     = local.rg_name
+  vnet_name               = local.vnet_name
+  subnet_address_prefix   = [local.agw_subnet_address_prefix]
+  depends_on              = [module.vnet]
+}
+
 # ============================================ #
 # Azure SQL DB MODULE                          #
 # ============================================ #
@@ -119,7 +128,7 @@ module "aks" {
 
   default_node_pool             = local.aks_default_node_pool
   default_node_pool_availability_zones = local.aks_default_pool_zones
-  additional_node_pools         = local.additional_node_pools
+  # additional_node_pools         = local.additional_node_pools   # Uncomment here for additional Node pool
 
   enable_accelerated_networking = local.aks_enable_accelerated_networking
   os_disk_type                  = local.aks_os_disk_type
@@ -154,4 +163,37 @@ module "helm" {
   depends_on = [module.aks, module.tls_secret]
 }
 
+# ============================================ #
+# PUBLIC IP MODULE                             #
+# ============================================ #
 
+# Public IP for AGW
+module "agw_public_ip" {
+  source              = "../azure-modules/public-ip"
+  name                = local.agw_public_ip_name
+  location            = local.location
+  resource_group_name = local.rg_name
+  domain_name_label   = local.agw_domain_name_label
+  tags                = local.default_tags
+  depends_on = [module.helm]
+}
+
+# ============================================ #
+# APPLICATION GATEWAY MODULE                   #
+# ============================================ #
+module "application_gateway" {
+  source              = "../azure-modules/application-gateway"
+  name                = local.agw_name
+  location            = local.location
+  resource_group_name = local.rg_name
+  subnet_id           = module.agw_subnet.subnet_id
+  public_ip_id        = module.agw_public_ip.public_ip_id
+
+  ssl_cert_name       = local.agw_ssl_cert_name
+  pfx_path            = local.agw_pfx_path
+  pfx_password        = local.agw_pfx_password
+
+  backend_ip          = local.agw_backend_ip
+  tags                = local.default_tags
+  depends_on          = [module.agw_public_ip]
+}
