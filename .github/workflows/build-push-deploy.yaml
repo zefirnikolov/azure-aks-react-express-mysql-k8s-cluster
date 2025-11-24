@@ -4,29 +4,27 @@ on:
   workflow_dispatch:
     inputs:
       build-the-app:
-        description: "Building & uploading to docker-hub"
+        description: "Build & upload Docker image"
         required: true
         type: boolean
         default: true
       deploy-to-k8s:
-        description: "Deploy to k8s"
+        description: "Deploy to Kubernetes"
         required: true
         type: boolean
         default: true
-
 
 jobs:
   build-and-upload-to-dockerhub:
     uses: zefirnikolov/custom-github-actions/.github/workflows/reusable-react-docker-build-and-push.yaml@main
     with:
       build-the-app: ${{ inputs.build-the-app }}
-      install-dependencies-command: cp -r ./client/* . && npm ci
-      docker-image-name: privatization
-      static-docker-image-tag: aksweb2
-    
+      docker-image-name: webshop-fe
+      static-docker-image-tag: 1
     secrets:
       docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
-      docker-password: ${{ secrets.DOCKERHUB_TOKEN }}  
+      docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
+
   deploy-to-k8s:
     needs: [build-and-upload-to-dockerhub]
     uses: zefirnikolov/custom-github-actions/.github/workflows/reusable-deploy-helm-chart-to-aks.yaml@main
@@ -34,11 +32,8 @@ jobs:
       deploy-to-k8s: ${{ inputs.deploy-to-k8s }}
       helm-chart-name: ./tools/k8s-helm-chart/marketplace
       helm-deployment-name: webshop
-      # --set web.ssl=false,web.dockerTag=aksweb2
-      additional-helm-commands: --set web.dockerTag=aksweb2
-
+      additional-helm-commands: --set web.imageRepository=zefirnikolov/webshop-fe --set web.dockerTag=1
     secrets:
       azure-credentials: ${{ secrets.AZURE_K8S_CREDENTIALS }}
       aks-cluster-name: ${{ secrets.AZURE_CLUSTER_NAME }}
       resource-group: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
-
