@@ -35,10 +35,10 @@ jobs:
       additional-helm-commands: >-
         --set web.imageRepository=zefirnikolov/webshop-fe
         --set web.dockerTag=2
-        --set server.dbHostname=${{ secrets.DB_HOSTNAME }}
-        --set server.dbUser=${{ secrets.DB_USER }}
-        --set server.dbUserPassword=${{ secrets.DB_PASSWORD }}
-        --set server.dbName=${{ secrets.DB_NAME }}
+        --set server.dbHostname="${{ secrets.DB_HOSTNAME }}"
+        --set server.dbUser="${{ secrets.DB_USER }}"
+        --set server.dbUserPassword="${{ secrets.DB_PASSWORD }}"
+        --set server.dbName="${{ secrets.DB_NAME }}"
     secrets:
       azure-credentials: ${{ secrets.AZURE_K8S_CREDENTIALS }}
       aks-cluster-name: ${{ secrets.AZURE_CLUSTER_NAME }}
