@@ -30,7 +30,7 @@ jobs:
     uses: zefirnikolov/custom-github-actions/.github/workflows/reusable-deploy-helm-chart-to-aks.yaml@main
     with:
       deploy-to-k8s: ${{ inputs.deploy-to-k8s }}
-      helm-chart-name: ./tools/k8s-helm-chart/marketplace
+      helm-chart-name: ./tools/k8s-helm-chart/webshop
       helm-deployment-name: webshop
       additional-helm-commands: >-
         --set web.imageRepository=zefirnikolov/webshop-fe
