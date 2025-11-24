@@ -20,7 +20,7 @@ jobs:
     with:
       build-the-app: ${{ inputs.build-the-app }}
       docker-image-name: webshop-fe
-      static-docker-image-tag: 1
+      static-docker-image-tag: 2
     secrets:
       docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
       docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
