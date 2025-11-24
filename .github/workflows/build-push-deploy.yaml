@@ -33,8 +33,8 @@ jobs:
       helm-chart-name: ./tools/k8s-helm-chart/webshop
       helm-deployment-name: webshop
       additional-helm-commands: >-
-        --set web.imageRepository=zefirnikolov/webshop-fe
-        --set web.dockerTag="2"
+        --set webSsr.dockerImage=zefirnikolov/webshop-fe
+        --set webSsr.dockerTag="2"
         --set ingress.tls.enabled=true
         --set ingress.tls.secretName=webshop-tls
     secrets:
